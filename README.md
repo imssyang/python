@@ -113,6 +113,15 @@ TWINE_USERNAME=me TWINE_PASSWORD=passwd twine upload dist/*
 twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 ```
 
+# virtualenv
+```
+pip install virtualenv            安装
+virtualenv pip_test_env           创建pip_test_env环境(创建$HOME/.local/share/virtualenv和pip_test_env目录)
+source pip_test_env/bin/activate  激活环境
+deactivate                        恢复环境
+```
+
+
 # 示例
 [Welcome to The Hitchhiker’s Guide to Packaging](https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html)
 
