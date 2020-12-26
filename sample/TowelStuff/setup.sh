@@ -5,6 +5,31 @@ help() {
   python setup.py --help-commands
 }
 
+clean() {
+  sdist_clean
+  bdist_clean
+}
+
+sdist() {
+  python setup.py sdist
+}
+
+sdist_clean() {
+  rm -rfv MANIFEST dist/
+}
+
+bdist() {
+  python setup.py bdist
+}
+
+bdist_egg() {
+  python setup.py bdist_egg
+}
+
+bdist_clean() {
+  rm -rfv build/ dist/ *.egg-info/
+}
+
 register() {
   #
   # @deprecated
@@ -16,15 +41,6 @@ register() {
   #   Server response (410): Project pre-registration is no longer required or supported, upload your files instead.
   #
   python setup.py register
-}
-
-sdist() {
-  python setup.py sdist
-}
-
-sdist_clean() {
-  rm -rfv dist
-  rm -rfv MANIFEST
 }
 
 sdist_upload() {
@@ -86,26 +102,20 @@ twine_upload() {
   twine upload dist/*
 }
 
-bdist_wininst() {
-  python setup.py bdist_wininst
-}
-
-bdist_clean() {
-  rm -rfv build/ dist/
-}
-
 case "$1" in
   help) help ;;
-  register) register ;;
+  clean) clean ;;
   sdist) sdist ;;
   sdist_clean) sdist_clean ;;
+  bdist) bdist ;;
+  bdist_egg) bdist_egg ;;
+  bdist_clean) bdist_clean ;;
+  register) register ;;
   sdist_upload) sdist_upload ;;
   twine_upload) twine_upload ;;
-  bdist_wininst) bdist_wininst ;;
-  bdist_clean) bdist_clean ;;
   *)
     SCRIPTNAME="${0##*/}"
-    echo "Usage: $SCRIPTNAME {help|register|sdist|sdist_clean|sdist_upload|twine_upload|bdist_wininst|bdist_clean}"
+    echo "Usage: $SCRIPTNAME {help|clean|sdist|sdist_clean|bdist|bdist_egg|bdist_clean|register|sdist_upload|twine_upload}"
     exit 3
     ;;
 esac
