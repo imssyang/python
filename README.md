@@ -128,6 +128,7 @@ https://pypi.org/project/virtualenvwrapper/
 
 # Pipenv: Python Development Workflow for Humans
 整合了pip和virtualenv的功能。
+https://github.com/pypa/pipenv
 
 
 # 示例
