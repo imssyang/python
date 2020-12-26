@@ -1,5 +1,5 @@
-[Welcome to The Hitchhiker’s Guide to Packaging](https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html)
-[TowelStuff](https://pypi.org/project/TowelStuff/)
+* `Welcome to The Hitchhiker’s Guide to Packaging <https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html>`_
+* `TowelStuff <https://pypi.org/project/TowelStuff/>`_
 
 ===========
 Towel Stuff
