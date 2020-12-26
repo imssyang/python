@@ -130,6 +130,12 @@ https://pypi.org/project/virtualenvwrapper/
 整合了pip和virtualenv的功能。
 https://github.com/pypa/pipenv
 
+# Egg包
+使用egg包的两个方式：
+ - *.egg拷贝到../site-packages后，在../site-packages/easy-install.pth文件中增加一行：./xxxx.egg.
+ - 运行时将egg文件添加到环境变量PYTHONPATH。例如PYTHONPATH=xxx.egg python xxx.py.
+
+# Wheel包
 
 # 示例
 [Welcome to The Hitchhiker’s Guide to Packaging](https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html)

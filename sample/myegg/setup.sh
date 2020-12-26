@@ -32,6 +32,10 @@ test() {
   python setup.py test
 }
 
+test_egg() {
+  PYTHONPATH=dist/myegg-1.0.0-py3.8.egg python test/test_egg.py
+}
+
 test_clean() {
   rm -rf *.egg-info/ my_egg/__pycache__/ test/__pycache__/
 }
@@ -44,10 +48,11 @@ case "$1" in
   bdist_egg) bdist_egg ;;
   bdist_clean) bdist_clean ;;
   test) test ;;
+  test_egg) test_egg ;;
   test_clean) test_clean ;;
   *)
     SCRIPTNAME="${0##*/}"
-    echo "Usage: $SCRIPTNAME {help|clean|sdist|sdist_clean|bdist_egg|bdist_clean|test|test_clean}"
+    echo "Usage: $SCRIPTNAME {help|clean|sdist|sdist_clean|bdist_egg|bdist_clean|test|test_egg|test_clean}"
     exit 3
     ;;
 esac
