@@ -135,7 +135,14 @@ https://github.com/pypa/pipenv
  - *.egg拷贝到../site-packages后，在../site-packages/easy-install.pth文件中增加一行：./xxxx.egg.
  - 运行时将egg文件添加到环境变量PYTHONPATH。例如PYTHONPATH=xxx.egg python xxx.py.
 
-# Wheel包
+# Wheel包 (新标准)
+```
+pip install wheel            安装
+vim setup.cfg                创建此文件配置为wheel格式（可选）
+  [bdist_wheel]
+  universal = 1              (仅在考虑兼容python2时)
+python setup.py bdist_wheel  编译后打包成wheel格式
+```
 
 # 示例
 [Welcome to The Hitchhiker’s Guide to Packaging](https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html)

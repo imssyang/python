@@ -24,6 +24,10 @@ bdist_egg() {
   python setup.py bdist_egg
 }
 
+bdist_wheel() {
+  python setup.py bdist_wheel
+}
+
 bdist_clean() {
   rm -rfv build/ dist/ *.egg-info/
 }
@@ -33,7 +37,11 @@ test() {
 }
 
 test_egg() {
-  PYTHONPATH=dist/myegg-1.0.0-py3.8.egg python test/test_egg.py
+  PYTHONPATH=dist/myegg-1.0.0-py3.8.egg python test/test_run.py
+}
+
+test_wheel() {
+  PYTHONPATH=dist/myegg-1.0.0-py3-none-any.whl python test/test_run.py
 }
 
 test_clean() {
@@ -46,13 +54,15 @@ case "$1" in
   sdist) sdist ;;
   sdist_clean) sdist_clean ;;
   bdist_egg) bdist_egg ;;
+  bdist_wheel) bdist_wheel ;;
   bdist_clean) bdist_clean ;;
   test) test ;;
   test_egg) test_egg ;;
+  test_wheel) test_wheel ;;
   test_clean) test_clean ;;
   *)
     SCRIPTNAME="${0##*/}"
-    echo "Usage: $SCRIPTNAME {help|clean|sdist|sdist_clean|bdist_egg|bdist_clean|test|test_egg|test_clean}"
+    echo "Usage: $SCRIPTNAME {help|clean|sdist|sdist_clean|bdist_egg|bdist_wheel|bdist_clean|test|test_egg|test_wheel|test_clean}"
     exit 3
     ;;
 esac
