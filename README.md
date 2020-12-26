@@ -114,12 +114,20 @@ twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 ```
 
 # virtualenv
+https://pypi.org/project/virtualenv/
+
 ```
 pip install virtualenv            安装
 virtualenv pip_test_env           创建pip_test_env环境(创建$HOME/.local/share/virtualenv和pip_test_env目录)
 source pip_test_env/bin/activate  激活环境
 deactivate                        恢复环境
 ```
+# virtualenvwrapper (依赖virtualenv)
+https://pypi.org/project/virtualenvwrapper/
+2020-12-26最高在python3.6上测试过
+
+# Pipenv: Python Development Workflow for Humans
+整合了pip和virtualenv的功能。
 
 
 # 示例
