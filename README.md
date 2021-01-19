@@ -43,9 +43,10 @@ pip install MyApp -f http://www.example.com/my-packages/  增加搜索地址（�
 
 # pipx
 ```
-pip install pipx     安装
-pip install -U pipx  更新
-pipx ensurepath          
+pip install --user pipx     安装到$HOME/.local
+pip install pipx            安装
+pip install -U pipx         更新
+pipx ensurepath             将安装位置加入到$PATH
 ```
 
 # CA根证书集合
