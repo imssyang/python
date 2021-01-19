@@ -1,6 +1,7 @@
 # Directory in archive file
 archive
 bin
+envs
 include
 lib
 share
