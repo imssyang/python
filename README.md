@@ -39,6 +39,13 @@ pip install -e svn+http://svn.colorstudy.com/INITools/trunk#egg=initools-dev 从
 pip install MyApp -f http://www.example.com/my-packages/  增加搜索地址（存在http://www.example.com/my-packages/MyApp-1.0.tgz时）
 ```
 
+# pipx
+```
+pip install pipx     安装
+pip install -U pipx  更新
+pipx ensurepath          
+```
+
 # CA根证书集合
 ```
 update-ca-certificates --fresh                              更新系统CA目录
