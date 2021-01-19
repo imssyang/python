@@ -27,6 +27,8 @@ python -m pip install --upgrade pip                                             
   Successfully installed pip-20.3.3
 
 (pip安装模块)
+pip install pysocks                支持socks代理
+pip install -r requirements.txt --proxy='socks5://127.0.0.1:1080'
 pip install Markdown               安装
 pip install 'Markdown<2.0'         安装指定版本
 pip install 'Markdown>2.0,<2.0.3'  安装指定版本
