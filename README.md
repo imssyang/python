@@ -131,7 +131,9 @@ export WORKON_HOME=/opt/python3/envs  设置工作目录
 mkdir -p $WORKON_HOME                 创建工作目录
 source /opt/python3/bin/virtualenvwrapper.sh  安装函数
 mkvirtualenv env1                     创建环境
+rmvirtualenv env1                     删除环境
 workon env1                           激活环境
+workon                                列出环境
 ```
 # Pipenv: Python Development Workflow for Humans
 整合了pip和virtualenv的功能。
