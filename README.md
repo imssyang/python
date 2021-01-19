@@ -125,7 +125,14 @@ deactivate                        恢复环境
 # virtualenvwrapper (依赖virtualenv)
 https://pypi.org/project/virtualenvwrapper/
 2020-12-26最高在python3.6上测试过
-
+```
+pip install virtualenvwrapper         安装
+export WORKON_HOME=/opt/python3/envs  设置工作目录
+mkdir -p $WORKON_HOME                 创建工作目录
+source /opt/python3/bin/virtualenvwrapper.sh  安装函数
+mkvirtualenv env1                     创建环境
+workon env1                           激活环境
+```
 # Pipenv: Python Development Workflow for Humans
 整合了pip和virtualenv的功能。
 https://github.com/pypa/pipenv
