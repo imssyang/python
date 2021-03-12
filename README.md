@@ -165,4 +165,5 @@ python setup.py bdist_wheel  编译后打包成wheel格式
 
 # 示例
 [Welcome to The Hitchhiker’s Guide to Packaging](https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html)
+[Awesome Python](https://python.libhunt.com/)
 
