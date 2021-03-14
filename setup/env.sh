@@ -26,6 +26,8 @@ export VIRTUALENV_CONFIG_FILE=/opt/python3/conf/virtualenv.ini
 
 # virtualenvwrapper
 export WORKON_HOME=/opt/python3/envs
-source /opt/python3/bin/virtualenvwrapper.sh
+if [[ -f /opt/python3/bin/virtualenvwrapper.sh ]]; then
+  source /opt/python3/bin/virtualenvwrapper.sh
+fi
 
 
