@@ -25,6 +25,7 @@ export TWINE_PASSWORD=1992@pypi.com
 export VIRTUALENV_CONFIG_FILE=/opt/python3/conf/virtualenv.ini
 
 # virtualenvwrapper
+export VIRTUALENVWRAPPER_PYTHON=/opt/python3/bin/python3
 export WORKON_HOME=/opt/python3/envs
 if [[ -f /opt/python3/bin/virtualenvwrapper.sh ]]; then
   source /opt/python3/bin/virtualenvwrapper.sh
