@@ -6,3 +6,4 @@ include
 lib
 pipx
 share
+**/__pycache__
