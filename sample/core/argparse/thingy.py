@@ -3,11 +3,11 @@ python thingy.py -a 123 -b abc
 '''
 import sys
 import argparse
-from util.mlogger import mlog
+from core.logging import Logger
 
 
 def parse_args_f():
-    mlog.info(f"sys.argv: {sys.argv}")
+    Logger.info(f"sys.argv: {sys.argv}")
     parser = argparse.ArgumentParser(description='description here')
     parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.1')
     parser.add_argument('-a', '--arg1', required=True, help='this is for arg1')

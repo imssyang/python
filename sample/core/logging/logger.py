@@ -12,7 +12,7 @@ class Singleton(type):
         return cls._instances[cls]
 
 
-class MLogger(metaclass=Singleton):
+class Logger(metaclass=Singleton):
     logger = None
 
     def __init__(self):
@@ -36,4 +36,3 @@ class MLogger(metaclass=Singleton):
         message = "{}:{}:{}] {}".format(*self.__get_call_info(), message)
         self.logger.info(message, *args)
 
-mlog = MLogger()
