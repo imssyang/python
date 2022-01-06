@@ -179,6 +179,8 @@ pre-commit uninstall                卸载hook
 pre-commit run --all-files          在所有文件上运行hook
 pre-commit run --files              在指定文件上运行hook
 pre-commit run --from-ref origin/HEAD --to-ref HEAD   只检查已经更改的文件
+git config --global init.templateDir ~/.git-template
+pre-commit init-templatedir ~/.git-template           新clone仓库自动配置pre-commit
 git commit --no-verify              提交时禁用pre-commit
 ~/.cache/pre-commit                 默认CACHE位置
 PRE_COMMIT_HOME                     环境变量，可代替默认Cache位置
