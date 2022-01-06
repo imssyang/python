@@ -23,4 +23,3 @@ def dispose():
     WIDGET_NAME = None
     WIDGET_X = WIDGET_Y = 0
     print(f"dispose")
-

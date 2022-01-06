@@ -1,4 +1,4 @@
-❯ make install 2>../make_install.log 1>&2 
+❯ make install 2>../make_install.log 1>&2
 if test "no-framework" = "no-framework" ; then \
 	/usr/bin/install -c python /opt/python3/bin/python3.8; \
 else \
@@ -37,16 +37,16 @@ INFO: Can't locate Tcl/Tk libs and/or headers
 
 Python build finished successfully!
 The necessary bits to build these optional modules were not found:
-_curses               _curses_panel         _dbm               
-_lzma                 _tkinter              _uuid              
-readline                                                       
+_curses               _curses_panel         _dbm
+_lzma                 _tkinter              _uuid
+readline
 To find the necessary bits, look in setup.py in detect_modules() for the module's name.
 
 
 The following modules found by detect_modules() in setup.py, have been
 built by the Makefile instead, as configured by the Setup files:
-_abc                  atexit                pwd                
-time                                                           
+_abc                  atexit                pwd
+time
 
 running build_scripts
 copying and adjusting /opt/python3/archive/source/Python-3.8.5/Tools/scripts/pydoc3 -> build/scripts-3.8
@@ -9370,16 +9370,16 @@ INFO: Can't locate Tcl/Tk libs and/or headers
 
 Python build finished successfully!
 The necessary bits to build these optional modules were not found:
-_curses               _curses_panel         _dbm               
-_lzma                 _tkinter              _uuid              
-readline                                                       
+_curses               _curses_panel         _dbm
+_lzma                 _tkinter              _uuid
+readline
 To find the necessary bits, look in setup.py in detect_modules() for the module's name.
 
 
 The following modules found by detect_modules() in setup.py, have been
 built by the Makefile instead, as configured by the Setup files:
-_abc                  atexit                pwd                
-time                                                           
+_abc                  atexit                pwd
+time
 
 running build_scripts
 copying and adjusting /opt/python3/archive/source/Python-3.8.5/Tools/scripts/pydoc3 -> build/scripts-3.8

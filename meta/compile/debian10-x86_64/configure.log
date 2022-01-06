@@ -18,7 +18,7 @@ checking MACHDEP... "linux"
 checking for gcc... gcc
 checking whether the C compiler works... yes
 checking for C compiler default output file name... a.out
-checking for suffix of executables... 
+checking for suffix of executables...
 checking whether we are cross compiling... no
 checking for suffix of object files... o
 checking whether we are using the GNU C compiler... yes
@@ -46,7 +46,7 @@ checking minix/config.h presence... no
 checking for minix/config.h... no
 checking whether it is safe to define __EXTENSIONS__... yes
 checking for the Android API level... not Android
-checking for --with-suffix... 
+checking for --with-suffix...
 checking for case-insensitive build directory... no
 checking LIBRARY... libpython$(VERSION)$(ABIFLAGS).a
 checking LINKCC... $(PURIFY) $(MAINCC)
@@ -369,7 +369,7 @@ checking for --with-decimal-contextvar... yes
 checking for --enable-loadable-sqlite-extensions... no
 checking for --with-tcltk-includes... default
 checking for --with-tcltk-libs... default
-checking for --with-dbmliborder... 
+checking for --with-dbmliborder...
 checking if PTHREAD_SCOPE_SYSTEM is supported... yes
 checking for pthread_sigmask... yes
 checking for pthread_getcpuclockid... yes
@@ -668,7 +668,7 @@ checking for UCS-4 tcl... no
 checking whether wchar_t is signed... yes
 checking whether wchar_t is usable... no
 checking whether byte ordering is bigendian... no
-checking ABIFLAGS... 
+checking ABIFLAGS...
 checking SOABI... cpython-38-x86_64-linux-gnu
 checking LDVERSION... $(VERSION)$(ABIFLAGS)
 checking whether right shift extends the sign bit... yes
@@ -743,5 +743,3 @@ creating Makefile
 
 If you want a release build with all stable optimizations active (PGO, etc),
 please run ./configure --enable-optimizations
-
-

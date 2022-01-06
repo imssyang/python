@@ -1,0 +1,13 @@
+************* Module test1
+test1.py:7:0: C0103: Constant name "shift" doesn't conform to UPPER_CASE naming style (invalid-name)
+test1.py:10:0: C0103: Constant name "letters" doesn't conform to UPPER_CASE naming style (invalid-name)
+test1.py:11:0: C0103: Constant name "encoded" doesn't conform to UPPER_CASE naming style (invalid-name)
+test1.py:15:12: C0103: Constant name "encoded" doesn't conform to UPPER_CASE naming style (invalid-name)
+test1.py:17:12: C0103: Constant name "x" doesn't conform to UPPER_CASE naming style (invalid-name)
+test1.py:18:12: C0103: Constant name "encoded" doesn't conform to UPPER_CASE naming style (invalid-name)
+test1.py:22:12: C0103: Constant name "encoded" doesn't conform to UPPER_CASE naming style (invalid-name)
+test1.py:24:12: C0103: Constant name "x" doesn't conform to UPPER_CASE naming style (invalid-name)
+test1.py:25:12: C0103: Constant name "encoded" doesn't conform to UPPER_CASE naming style (invalid-name)
+
+------------------------------------------------------------------
+Your code has been rated at 5.26/10 (previous run: 5.26/10, +0.00)
