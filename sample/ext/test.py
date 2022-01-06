@@ -25,3 +25,4 @@ if choice == "decode":
             encoded = encoded + letters[x]
 
 print(encoded)
+
