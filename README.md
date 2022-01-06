@@ -18,7 +18,7 @@ python setup.py install
 python -m pip install --upgrade pip                                                                                                                  ✘ 1 master ✱ ◼
   Collecting pip
     Downloading pip-20.3.3-py2.py3-none-any.whl (1.5 MB)
-       |████████████████████████████████| 1.5 MB 539 kB/s 
+       |████████████████████████████████| 1.5 MB 539 kB/s
   Installing collected packages: pip
     Attempting uninstall: pip
       Found existing installation: pip 20.1.1
@@ -163,7 +163,25 @@ vim setup.cfg                创建此文件配置为wheel格式（可选）
 python setup.py bdist_wheel  编译后打包成wheel格式
 ```
 
+# pylint
+
+pip install pylint
+pip install pylint-gitlab
+
+# pre-commit
+
+pip install pre-commit
+PROJECT/.pre-commit-config.yaml     配置安装的钩子类型
+pre-commit install --install-hooks  安装hook并打印安装位置
+pre-commit uninstall                卸载hook
+pre-commit run --all-files          在所有文件上运行hook
+pre-commit run --files              在指定文件上运行hook
+git commit --no-verify              提交时禁用pre-commit
+[Supported hooks](https://pre-commit.com/hooks.html)
+
+# commit-msg
+
+
 # 示例
 [Welcome to The Hitchhiker’s Guide to Packaging](https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html)
 [Awesome Python](https://python.libhunt.com/)
-

@@ -164,7 +164,7 @@ else \
 	gcc -pthread -shared -L/opt/bzip2/lib -L/opt/expat/lib -L/opt/ffi/lib -L/opt/sqlite/lib -L/opt/zlib/lib -Wl,-rpath=/opt/python3/lib,--disable-new-dtags    -o libpython3.8.so Modules/getbuildinfo.o Parser/acceler.o Parser/grammar1.o Parser/listnode.o Parser/node.o Parser/parser.o Parser/token.o  Parser/myreadline.o Parser/parsetok.o Parser/tokenizer.o Objects/abstract.o Objects/accu.o Objects/boolobject.o Objects/bytes_methods.o Objects/bytearrayobject.o Objects/bytesobject.o Objects/call.o Objects/capsule.o Objects/cellobject.o Objects/classobject.o Objects/codeobject.o Objects/complexobject.o Objects/descrobject.o Objects/enumobject.o Objects/exceptions.o Objects/genobject.o Objects/fileobject.o Objects/floatobject.o Objects/frameobject.o Objects/funcobject.o Objects/interpreteridobject.o Objects/iterobject.o Objects/listobject.o Objects/longobject.o Objects/dictobject.o Objects/odictobject.o Objects/memoryobject.o Objects/methodobject.o Objects/moduleobject.o Objects/namespaceobject.o Objects/object.o Objects/obmalloc.o Objects/picklebufobject.o Objects/rangeobject.o Objects/setobject.o Objects/sliceobject.o Objects/structseq.o Objects/tupleobject.o Objects/typeobject.o Objects/unicodeobject.o Objects/unicodectype.o Objects/weakrefobject.o Python/_warnings.o Python/Python-ast.o Python/asdl.o Python/ast.o Python/ast_opt.o Python/ast_unparse.o Python/bltinmodule.o Python/ceval.o Python/codecs.o Python/compile.o Python/context.o Python/dynamic_annotations.o Python/errors.o Python/frozenmain.o Python/future.o Python/getargs.o Python/getcompiler.o Python/getcopyright.o Python/getplatform.o Python/getversion.o Python/graminit.o Python/hamt.o Python/import.o Python/importdl.o Python/initconfig.o Python/marshal.o Python/modsupport.o Python/mysnprintf.o Python/mystrtoul.o Python/pathconfig.o Python/peephole.o Python/preconfig.o Python/pyarena.o Python/pyctype.o Python/pyfpe.o Python/pyhash.o Python/pylifecycle.o Python/pymath.o Python/pystate.o Python/pythonrun.o Python/pytime.o Python/bootstrap_hash.o Python/structmember.o Python/symtable.o Python/sysmodule.o Python/thread.o Python/traceback.o Python/getopt.o Python/pystrcmp.o Python/pystrtod.o Python/pystrhex.o Python/dtoa.o Python/formatter_unicode.o Python/fileutils.o Python/dynload_shlib.o    Modules/config.o Modules/getpath.o Modules/main.o Modules/gcmodule.o Modules/posixmodule.o  Modules/errnomodule.o  Modules/pwdmodule.o  Modules/_sre.o  Modules/_codecsmodule.o  Modules/_weakref.o  Modules/_functoolsmodule.o  Modules/_operator.o  Modules/_collectionsmodule.o  Modules/_abc.o  Modules/itertoolsmodule.o  Modules/atexitmodule.o  Modules/signalmodule.o  Modules/_stat.o  Modules/timemodule.o  Modules/_threadmodule.o  Modules/_localemodule.o  Modules/_iomodule.o Modules/iobase.o Modules/fileio.o Modules/bytesio.o Modules/bufferedio.o Modules/textio.o Modules/stringio.o  Modules/faulthandler.o  Modules/_tracemalloc.o Modules/hashtable.o  Modules/symtablemodule.o  Modules/xxsubtype.o Python/frozen.o   -lcrypt -lpthread -ldl  -lutil -lm  -lm; \
 fi
 gcc -pthread -shared -L/opt/bzip2/lib -L/opt/expat/lib -L/opt/ffi/lib -L/opt/sqlite/lib -L/opt/zlib/lib -Wl,-rpath=/opt/python3/lib,--disable-new-dtags    -Wl,--no-as-needed -o libpython3.so -Wl,-hlibpython3.so libpython3.8.so
-gcc -pthread -L/opt/bzip2/lib -L/opt/expat/lib -L/opt/ffi/lib -L/opt/sqlite/lib -L/opt/zlib/lib -Wl,-rpath=/opt/python3/lib,--disable-new-dtags    -Xlinker -export-dynamic -o python Programs/python.o -L. -lpython3.8 -lcrypt -lpthread -ldl  -lutil -lm   -lm 
+gcc -pthread -L/opt/bzip2/lib -L/opt/expat/lib -L/opt/ffi/lib -L/opt/sqlite/lib -L/opt/zlib/lib -Wl,-rpath=/opt/python3/lib,--disable-new-dtags    -Xlinker -export-dynamic -o python Programs/python.o -L. -lpython3.8 -lcrypt -lpthread -ldl  -lutil -lm   -lm
 LD_LIBRARY_PATH=/opt/python3/archive/source/Python-3.8.5 ./python -E -S -m sysconfig --generate-posix-vars ;\
 if test $? -ne 0 ; then \
 	echo "generate-posix-vars failed" ; \
@@ -444,16 +444,16 @@ gcc -pthread -shared -L/opt/bzip2/lib -L/opt/expat/lib -L/opt/ffi/lib -L/opt/sql
 
 Python build finished successfully!
 The necessary bits to build these optional modules were not found:
-_curses               _curses_panel         _dbm               
-_lzma                 _tkinter              _uuid              
-readline                                                       
+_curses               _curses_panel         _dbm
+_lzma                 _tkinter              _uuid
+readline
 To find the necessary bits, look in setup.py in detect_modules() for the module's name.
 
 
 The following modules found by detect_modules() in setup.py, have been
 built by the Makefile instead, as configured by the Setup files:
-_abc                  atexit                pwd                
-time                                                           
+_abc                  atexit                pwd
+time
 
 running build_scripts
 creating build/scripts-3.8
@@ -468,6 +468,6 @@ renaming build/scripts-3.8/idle3 to build/scripts-3.8/idle3.8
 renaming build/scripts-3.8/2to3 to build/scripts-3.8/2to3-3.8
 /usr/bin/install -c -m 644 ./Tools/gdb/libpython.py python-gdb.py
 gcc -pthread -c -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -I/opt/bzip2/include -I/opt/expat/include -I/opt/ffi/include -I/opt/sqlite/include -I/opt/zlib/include   -std=c99 -Wextra -Wno-unused-result -Wno-unused-parameter -Wno-missing-field-initializers -Werror=implicit-function-declaration  -I./Include/internal  -I. -I./Include   -fPIC -DPy_BUILD_CORE -o Programs/_testembed.o ./Programs/_testembed.c
-gcc -pthread -L/opt/bzip2/lib -L/opt/expat/lib -L/opt/ffi/lib -L/opt/sqlite/lib -L/opt/zlib/lib -Wl,-rpath=/opt/python3/lib,--disable-new-dtags    -Xlinker -export-dynamic -o Programs/_testembed Programs/_testembed.o -L. -lpython3.8 -lcrypt -lpthread -ldl  -lutil -lm   -lm 
+gcc -pthread -L/opt/bzip2/lib -L/opt/expat/lib -L/opt/ffi/lib -L/opt/sqlite/lib -L/opt/zlib/lib -Wl,-rpath=/opt/python3/lib,--disable-new-dtags    -Xlinker -export-dynamic -o Programs/_testembed Programs/_testembed.o -L. -lpython3.8 -lcrypt -lpthread -ldl  -lutil -lm   -lm
 sed -e "s,@EXENAME@,/opt/python3/bin/python3.8," < ./Misc/python-config.in >python-config.py
 LC_ALL=C sed -e 's,\$(\([A-Za-z0-9_]*\)),\$\{\1\},g' < Misc/python-config.sh >python-config

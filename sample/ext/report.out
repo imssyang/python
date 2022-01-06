@@ -11,4 +11,3 @@ test1.py:25:12: C0103: Constant name "encoded" doesn't conform to UPPER_CASE nam
 
 ------------------------------------------------------------------
 Your code has been rated at 5.26/10 (previous run: 5.26/10, +0.00)
-

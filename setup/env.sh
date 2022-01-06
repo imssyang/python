@@ -31,5 +31,3 @@ export WORKON_HOME=/opt/python3/envs
 if [[ -f /opt/python3/bin/virtualenvwrapper.sh ]]; then
   source /opt/python3/bin/virtualenvwrapper.sh
 fi
-
-
