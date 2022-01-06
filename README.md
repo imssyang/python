@@ -178,6 +178,7 @@ pre-commit install --install-hooks  安装hook并打印安装位置
 pre-commit uninstall                卸载hook
 pre-commit run --all-files          在所有文件上运行hook
 pre-commit run --files              在指定文件上运行hook
+pre-commit run --from-ref origin/HEAD --to-ref HEAD   只检查已经更改的文件
 git commit --no-verify              提交时禁用pre-commit
 [Supported hooks](https://pre-commit.com/hooks.html)
 
