@@ -48,7 +48,7 @@ pytest --pdb --maxfail=3         drop to PDB for first three failures
 pytest --trace                   drop to PDB (Python Debugger) at the start of a test
 
 # Profiling test execution duration
-pytest --durations=10 --durations-min=1.0    
+pytest --durations=10 --durations-min=1.0
 
 # Plugins
 pytest -p mypluginmodule          early loading plugins
@@ -63,5 +63,3 @@ from setuptools import setup, find_packages
 setup(name="PACKAGENAME", packages=find_packages())
 ```
 - `pip install -e .` or `python setup.py develop`
-
-

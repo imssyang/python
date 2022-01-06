@@ -25,4 +25,3 @@ test_func2 = unittest.FunctionTestCase(widget_resize)
 runner = unittest.TextTestRunner()
 runner.run(test_func1)
 runner.run(test_func2)
-

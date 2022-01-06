@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="author" content="Stephan Müller" />
+
+  <title>pylint</title>
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css" />
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-light bg-light">
+    <span class="navbar-brand mb-0 h1">pylint</span>
+  </nav>
+
+  <section class="content">
+    <div class="container-fluid mt-3">
+        <div class="card bg-light mb-3">
+          <div class="card-header">
+            <h5 class="mb-0">test</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-sm">
+                <thead class="thead-light">
+                  <tr scope="col">
+                    <th></th>
+                    <th data-field="line">Line</th>
+                    <th data-field="column">Column</th>
+                    <th data-field="type">Type</th>
+                    <th data-field="obj">Object</th>
+                    <th data-field="message">Message</th>
+                    <th data-field="symbol">Symbol</th>
+                    <th data-field="message_id">Message Id</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="table-primary">
+                    <td><a href="/blob//test.py#L7" class="btn btn-light btn-sm" role="button"><i class="fas fa-code"></i> Source</a></td>
+                    <td>7</td>
+                    <td>0</td>
+                    <td>convention</td>
+                    <td></td>
+                    <td>Constant name "shift" doesn't conform to UPPER_CASE naming style</td>
+                    <td>invalid-name</td>
+                    <td>C0103</td>
+                  </tr>
+                  <tr class="table-primary">
+                    <td><a href="/blob//test.py#L10" class="btn btn-light btn-sm" role="button"><i class="fas fa-code"></i> Source</a></td>
+                    <td>10</td>
+                    <td>0</td>
+                    <td>convention</td>
+                    <td></td>
+                    <td>Constant name "letters" doesn't conform to UPPER_CASE naming style</td>
+                    <td>invalid-name</td>
+                    <td>C0103</td>
+                  </tr>
+                  <tr class="table-primary">
+                    <td><a href="/blob//test.py#L11" class="btn btn-light btn-sm" role="button"><i class="fas fa-code"></i> Source</a></td>
+                    <td>11</td>
+                    <td>0</td>
+                    <td>convention</td>
+                    <td></td>
+                    <td>Constant name "encoded" doesn't conform to UPPER_CASE naming style</td>
+                    <td>invalid-name</td>
+                    <td>C0103</td>
+                  </tr>
+                  <tr class="table-primary">
+                    <td><a href="/blob//test.py#L15" class="btn btn-light btn-sm" role="button"><i class="fas fa-code"></i> Source</a></td>
+                    <td>15</td>
+                    <td>12</td>
+                    <td>convention</td>
+                    <td></td>
+                    <td>Constant name "encoded" doesn't conform to UPPER_CASE naming style</td>
+                    <td>invalid-name</td>
+                    <td>C0103</td>
+                  </tr>
+                  <tr class="table-primary">
+                    <td><a href="/blob//test.py#L17" class="btn btn-light btn-sm" role="button"><i class="fas fa-code"></i> Source</a></td>
+                    <td>17</td>
+                    <td>12</td>
+                    <td>convention</td>
+                    <td></td>
+                    <td>Constant name "x" doesn't conform to UPPER_CASE naming style</td>
+                    <td>invalid-name</td>
+                    <td>C0103</td>
+                  </tr>
+                  <tr class="table-primary">
+                    <td><a href="/blob//test.py#L18" class="btn btn-light btn-sm" role="button"><i class="fas fa-code"></i> Source</a></td>
+                    <td>18</td>
+                    <td>12</td>
+                    <td>convention</td>
+                    <td></td>
+                    <td>Constant name "encoded" doesn't conform to UPPER_CASE naming style</td>
+                    <td>invalid-name</td>
+                    <td>C0103</td>
+                  </tr>
+                  <tr class="table-primary">
+                    <td><a href="/blob//test.py#L22" class="btn btn-light btn-sm" role="button"><i class="fas fa-code"></i> Source</a></td>
+                    <td>22</td>
+                    <td>12</td>
+                    <td>convention</td>
+                    <td></td>
+                    <td>Constant name "encoded" doesn't conform to UPPER_CASE naming style</td>
+                    <td>invalid-name</td>
+                    <td>C0103</td>
+                  </tr>
+                  <tr class="table-primary">
+                    <td><a href="/blob//test.py#L24" class="btn btn-light btn-sm" role="button"><i class="fas fa-code"></i> Source</a></td>
+                    <td>24</td>
+                    <td>12</td>
+                    <td>convention</td>
+                    <td></td>
+                    <td>Constant name "x" doesn't conform to UPPER_CASE naming style</td>
+                    <td>invalid-name</td>
+                    <td>C0103</td>
+                  </tr>
+                  <tr class="table-primary">
+                    <td><a href="/blob//test.py#L25" class="btn btn-light btn-sm" role="button"><i class="fas fa-code"></i> Source</a></td>
+                    <td>25</td>
+                    <td>12</td>
+                    <td>convention</td>
+                    <td></td>
+                    <td>Constant name "encoded" doesn't conform to UPPER_CASE naming style</td>
+                    <td>invalid-name</td>
+                    <td>C0103</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+    </div>
+  </section>
+
+</body>
+
+</html>

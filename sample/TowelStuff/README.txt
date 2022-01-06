@@ -43,4 +43,3 @@ Numbered lists look like you'd expect:
 
 Urls are http://like.this and links can be
 written `like this <http://www.example.com/foo/bar>`_.
-

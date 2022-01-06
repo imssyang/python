@@ -16,7 +16,3 @@ with Popen(['/data/app/vmaf-worker/assets/bin/upclone', '--config', '/data/app/v
     finally:
         retcode = process.poll()
     print(f"retcode: {retcode} stdout: {stdout} stderr: {stderr}")
-
-
-
-

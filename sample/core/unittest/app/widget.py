@@ -18,4 +18,3 @@ class Widget(object):
         print("dispose")
         self.name = None
         self.x = self.y = 0
-

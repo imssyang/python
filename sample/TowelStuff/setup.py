@@ -12,4 +12,3 @@ setup(
     description='Useful towel-related stuff.',
     long_description=open('README.txt').read(),
 )
-

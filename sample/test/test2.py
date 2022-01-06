@@ -16,7 +16,3 @@ with Popen(['ls', '/home'], stdout=PIPE, stderr=STDOUT, shell=True) as process:
     finally:
         retcode = process.poll()
     print(f"retcode: {retcode} stdout: {stdout} stderr: {stderr}")
-
-
-
-

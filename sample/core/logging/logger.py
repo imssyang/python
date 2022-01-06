@@ -35,4 +35,3 @@ class Logger(metaclass=Singleton):
     def info(self, message, *args):
         message = "{}:{}:{}] {}".format(*self.__get_call_info(), message)
         self.logger.info(message, *args)
-
