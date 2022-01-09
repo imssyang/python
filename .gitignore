@@ -8,3 +8,4 @@ pipx
 share
 **/__pycache__
 **/*.egg-info
+!sample/**/bin
