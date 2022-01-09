@@ -37,11 +37,11 @@ test() {
 }
 
 test_egg() {
-  PYTHONPATH=dist/myegg-1.0.0-py3.8.egg python test/test_run.py
+  PYTHONPATH=dist/myegg-1.0.0-py3.8.egg python -m unittest ../tests/test_hello.py
 }
 
 test_wheel() {
-  PYTHONPATH=dist/myegg-1.0.0-py3-none-any.whl python test/test_run.py
+  PYTHONPATH=dist/myegg-1.0.0-py3-none-any.whl python -m unittest test/test_hello.py
 }
 
 test_clean() {
