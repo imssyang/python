@@ -5,7 +5,7 @@ import sys
 import unittest
 
 sys.argv=['thingy.py', '-a', '123', '-b', 'abc']
-from thingy import Thingy, parse_args_f
+from core.argparse.thingy import Thingy, parse_args_f
 
 
 class ThingyTestCase(unittest.TestCase):

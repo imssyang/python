@@ -3,11 +3,11 @@ python thingy.py -a 123 -b abc
 '''
 import sys
 import argparse
-from core.logging import Logger
+from core.logging import logger
 
 
 def parse_args_f():
-    Logger.info(f"sys.argv: {sys.argv}")
+    logger.info(f"sys.argv: {sys.argv}")
     parser = argparse.ArgumentParser(description='description here')
     parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.1')
     parser.add_argument('-a', '--arg1', required=True, help='this is for arg1')
@@ -16,13 +16,13 @@ def parse_args_f():
 
 
 parser_f = parse_args_f()
-mlog.info(f"parser_f: {parser_f}")
+logger.info(f"parser_f: {parser_f}")
 
 
 class Thingy:
     @staticmethod
     def parse_args(args):
-        mlog.info(f"sys.argv: {sys.argv}\nargs: {args}")
+        logger.info(f"sys.argv: {sys.argv}\nargs: {args}")
         parser = argparse.ArgumentParser(description='description here')
         parser.add_argument('-v', '--version', action='version', version='%(prog)s 0.1')
         parser.add_argument('-a', '--arg1', required=True, help='this is for arg1')
@@ -32,8 +32,8 @@ class Thingy:
 
 if __name__ == '__main__':
     parser = Thingy.parse_args(sys.argv[1:])
-    mlog.info('parser: {}'.format(parser))
+    logger.info('parser: {}'.format(parser))
     if parser.arg1:
-        mlog.info(' - arg1: {}'.format(parser.arg1))
+        logger.info(' - arg1: {}'.format(parser.arg1))
     if parser.arg2:
-        mlog.info(' - arg2: {}'.format(parser.arg2))
+        logger.info(' - arg2: {}'.format(parser.arg2))
