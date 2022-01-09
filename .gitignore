@@ -7,3 +7,4 @@ lib
 pipx
 share
 **/__pycache__
+**/*.egg-info
