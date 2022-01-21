@@ -1,55 +1,65 @@
-from operator import itemgetter
+import aiofiles
+import aiohttp
+import asyncio
+import time
 
-print(itemgetter('a', 'c')({'a':1, 'b':2, 'c':3})) # (1, 3)
 
-print(itemgetter(1, 3, 5)('ABCDEFG')) # ('B', 'D', 'F')
-print(itemgetter('a', 'c')({'a':1, 'b':2, 'c':3})) # (1, 3)
-print({'a':1}.get('b'))
-for i in range(0):
-    print(i)
-print(callable(None))
-#print(len(None))
-print(f"{None}")
-if "":
-    print("====False")
-else:
-    print("====True")
-print(bool(""))
+async def task_1():
+    async with aiohttp.ClientSession() as session:
+        print(f"111->{session}")
+        async with session.get('http://python.org') as response:
+            print("Status:", response.status)
+            print("Content-type:", response.headers['content-type'])
+            html = await response.text()
+            print("Body:", html[:15], "...")
 
-import os
+async def task_2():
+    async with aiohttp.ClientSession() as session:
+        print(f"222->{session}")
+        async with session.get('http://bilibilitest-1252693259.cosgz.myqcloud.com/2022-01-20-live_867152_6880638/20220120113530.png') as response:
+            print("Status:", response.status)
+            if response.status == 200:
+                print("Content-type:", response.headers['content-type'])
+                async with aiofiles.open('20220120113530-0.png', mode='wb') as f:
+                    await f.write(await response.read())
 
-# create
-d1 = {'a': 1, 2: 'b', 'c': [3, 4, 5]}
-d2 = dict({'a': 1, 2: 'b'})      # {'a': 1, 2: 'b'}
-d3 = dict([('a', 1), (2, 'b')])  # {'a': 1, 2: 'b'}
-d4 = {k:v for k,v in d3.items()} # {'a': 1, 2: 'b'}
+async def task_3():
+    async with aiohttp.ClientSession() as session:
+        print(f"333->{session}")
+        async with session.get('http://bilibilitest-1252693259.cosgz.myqcloud.com/2022-01-20-live_867152_6880638/20220120113530.png') as response:
+            print("Status:", response.status)
+            if response.status == 200:
+                print("Content-type:", response.headers['content-type'])
+                f = await aiofiles.open('20220120113530-1.png', mode='wb')
+                await f.write(await response.read())
+                await f.close()
 
-# access
-print(d1['a'], d1[2], d1.get('d'))  # 1 b [3, 4, 5]
+async def task_4():
+    async with aiohttp.ClientSession() as session:
+        print(f"444->{session}")
+        async with session.get('http://bilibilitest-1252693259.cosgz.myqcloud.com/2022-01-20-live_867152_6880638/20220120113530.png') as response:
+            print("Status:", response.status)
+            if response.status == 200:
+                print("Content-type:", response.headers['content-type'])
+                f = await aiofiles.open('20220120113530-2.png', mode='wb')
+                await f.write(await response.read())
+                await f.close()
+        return 4
 
-# append
-d2['c'] = 3
-d3.update({'c': 3})
-print(d2, d3, sep=os.linesep)
+async def main():
+    while True:
+        L = await asyncio.gather(
+            task_1(),
+            task_2(),
+            task_3(),
+            task_4(),
+            task_4(),
+        )
+        print(L)
+        break
 
-# update
-d2['a'] = 11
-d3.update({'a': 11})
-print(d2, d3, sep=os.linesep)
-
-# remove
-d1.clear(); print(d1)   # {}
-del d2['a']; print(d2)  # {2: 'b', 'c': 3}
-print(d3.pop('a'), d3)  # 11 {2: 'b', 'c': 3}
-
-# iterate
-for key in d2:
-    print(key)
-for value in d2.values():
-    print(value)
-for k, v in d2.items():
-    print(k, ':', v)
-
-# truth
-print('a' not in d3) # True
-print(2 in d3)       # True
+print("ENTER")
+loop = asyncio.get_event_loop()
+#loop.run_until_complete(main())
+asyncio.run(main())
+print("FINISH")
