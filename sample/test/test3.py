@@ -1,22 +1,6 @@
-import threading, queue
+import os
 
-q = queue.Queue()
+os.environ['VXCODE_DRY_RUN'] = "1"
 
-def worker():
-    while True:
-        item = q.get()
-        print(f'Working on {item}')
-        print(f'Finished {item}')
-        #q.task_done()
-
-# turn-on the worker thread
-threading.Thread(target=worker, daemon=True).start()
-
-# send thirty task requests to the worker
-for item in range(30):
-    q.put(item)
-print('All task requests sent\n', end='')
-
-# block until all tasks are done
-q.join()
-print('All work completed')
+print(os.getenv('VXCODE_POOL_SIZE'))
+print(int(os.getenv('VXCODE_DRY_RUN')))
