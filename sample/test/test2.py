@@ -1,4 +1,7 @@
 
+sss = '0.23k'
+print(5/3, 5//3, float(sss[:-1]), '' in 'aaa')
+
 import os
 
 print(os.path.exists('/opt/python3/sample/test/test2.py'))
