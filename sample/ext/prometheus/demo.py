@@ -7,7 +7,7 @@ import time
 # Create a metric to track time spent and requests made.
 REQUEST_TIME = Summary("request_processing_seconds", "Time spent processing request")
 
-s = Summary("request_latency_seconds", "Description of summary")
+REQUEST_LATENCY = Summary("request_latency_seconds", "Description of summary")
 
 # Decorate function with metric.
 @REQUEST_TIME.time()
