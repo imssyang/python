@@ -17,7 +17,7 @@ cd pip-0.7.2
 python setup.py install
 
 (命令更新pip)
-python -m pip install --upgrade pip                                                                                                                  ✘ 1 master ✱ ◼
+python -m pip install --upgrade pip
   Collecting pip
     Downloading pip-20.3.3-py2.py3-none-any.whl (1.5 MB)
        |████████████████████████████████| 1.5 MB 539 kB/s

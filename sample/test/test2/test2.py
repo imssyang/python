@@ -1,5 +1,5 @@
-# content of test_sample.py
 def inc(x):
+    # content of test_sample.py
     return x + 1
 
 
