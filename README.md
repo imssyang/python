@@ -189,6 +189,14 @@ XDG_CACHE_HOME                      环境变量，可代替PRE_COMMIT_HOME位�
 
 # commit-msg
 
+# PyTorch
+
+```shell
+# PyTorch v1.11.0 & CUDA 11.3
+pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu113
+# PyTorch v1.11.0 & CPU
+pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
+```
 
 # 示例
 [Welcome to The Hitchhiker’s Guide to Packaging](https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html)

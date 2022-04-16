@@ -14,6 +14,9 @@ eval "optlib -s /opt/python3/lib/python3.8/config-3.8-x86_64-linux-gnu"
 eval "optlib -s /opt/python3/lib/python3.8/lib-dynload"
 eval "optlib -s /opt/python3/lib/python3.8/site-packages"
 
+# pip
+export PIP_CONFIG_FILE=/opt/python3/conf/pip.conf
+
 # pipx
 export PIPX_BIN_DIR=/opt/python3/bin
 export PIPX_HOME=/opt/python3/pipx
