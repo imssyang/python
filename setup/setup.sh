@@ -44,6 +44,10 @@ init() {
   chown -R root:root $HOME
   chmod 755 $HOME
 
+  $HOME/bin/python3 -m pip install --upgrade pip setuptools wheel
+}
+
+base() {
   $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements.txt
 }
 
@@ -53,6 +57,7 @@ cuda() {
 
 case "$1" in
   init) init ;;
+  base) base ;;
   cuda) cuda ;;
   *) SCRIPTNAME="${0##*/}"
     echo "Usage: $SCRIPTNAME {init|cuda}"

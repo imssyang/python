@@ -9,6 +9,7 @@ package_paths=(
   $PYTHONPATH
 )
 IFS=:$IFS; export PYTHONPATH="${package_paths[*]}"; IFS=${IFS#?}
+export PYTHONWARNINGS="ignore::DeprecationWarning"
 export PYTHONNOUSERSITE=1
 eval "optbin -s /opt/python3/bin"
 eval "optman -s /opt/python3/share/man"

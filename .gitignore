@@ -2,6 +2,7 @@
 archive
 bin
 envs
+gmon.out
 include
 lib
 pipx
