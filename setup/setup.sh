@@ -43,11 +43,10 @@ init() {
 
   chown -R root:root $HOME
   chmod 755 $HOME
-
-  $HOME/bin/python3 -m pip install --upgrade pip setuptools wheel
 }
 
 base() {
+  $HOME/bin/python3 -m pip install --upgrade pip setuptools wheel
   $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements.txt
 }
 
