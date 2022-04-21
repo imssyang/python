@@ -14,7 +14,6 @@ CXX="/usr/bin/g++" \
     --sysconfdir=/opt/python3/conf \
     --enable-shared \
     --enable-optimizations \
-    --enable-profiling \
     --enable-loadable-sqlite-extensions \
     --enable-ipv6 \
     --with-pydebug \
