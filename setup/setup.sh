@@ -13,10 +13,15 @@ init() {
   $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements.txt
 }
 
+cuda() {
+  $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements-cuda.txt
+}
+
 case "$1" in
   init) init ;;
+  cuda) cuda ;;
   *) SCRIPTNAME="${0##*/}"
-    echo "Usage: $SCRIPTNAME {init}"
+    echo "Usage: $SCRIPTNAME {init|cuda}"
     exit 3
     ;;
 esac

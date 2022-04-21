@@ -2,9 +2,13 @@
 
 # python3
 export PYTHON3_DISABLE_ENV=yes
-#export PYTHONHOME=/opt/python3  # when enable, gdb cannot run.
-#export PYTHONPATH=/usr/local/lib/python3.8/site-packages:$PYTHONPATH
-export PYTHONPATH=/opt/python3/sample
+package_paths=(
+  /usr/local/lib/python3.8/site-packages
+  /opt/python3/lib/python3.8/site-packages
+  /opt/python3/sample
+  $PYTHONPATH
+)
+IFS=:$IFS; export PYTHONPATH="${package_paths[*]}"; IFS=${IFS#?}
 export PYTHONNOUSERSITE=1
 eval "optbin -s /opt/python3/bin"
 eval "optman -s /opt/python3/share/man"

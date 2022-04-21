@@ -3,13 +3,15 @@
 # python3
 
 # 包工具
-```
+
+```txt
 工具：Setuptools (deprecated) -> Distribute (deprecated)    -> pip
 模块: distutils               -> distutils && distutils2    -> StandardLibrary
 ```
 
 # pip工具
-```
+
+```txt
 (源码安装pip)
 wget http://pypi.python.org/packages/source/p/pip/pip-0.7.2.tar.gz
 tar xzf pip-0.7.2.tar.gz
@@ -44,7 +46,7 @@ pip install MyApp -f http://www.example.com/my-packages/  增加搜索地址（�
 ```
 
 # pipx
-```
+```txt
 pip install --user pipx     安装到$HOME/.local
 pip install pipx            安装
 pip install -U pipx         更新
@@ -52,20 +54,22 @@ pipx ensurepath             将安装位置加入到$PATH
 ```
 
 # CA根证书集合
-```
+```txt
 update-ca-certificates --fresh                              更新系统CA目录
 export SSL_CERT_DIR=/opt/openssl/ssl/certs:/etc/ssl/certs   Openssl寻找CA目录
 ```
 
 # 安装certifi
-```
+
+```shell
 当使用Mozilla维护的根证书集合时安装此模块
 pip install certifi
 pip install git+https://github.com/certifi/python-certifi  从指定地址安装
 ```
 
 # 寻找包的位置
-```
+
+```shell
 import sys
 from pprint import pprint
 pprint(sys.path)  打印寻找的目录列表
@@ -76,6 +80,7 @@ pprint(sys.path)  打印寻找的目录列表
   /opt/python3/lib/python3.8/site-packages
   /opt/python3/lib/python3.8/site-packages/six-1.15.0-py3.8.egg
 ```
+
 # 扩展sys.path
  - 在sys.path中的/opt/python3/lib/python3.8/site-packages目录下增加一个xxx.pth文件(默认存在easy-install.pth), 每行包含一个要增加到sys.path的路径。
    使用相对路径时，路径是相对于.pth文件所在路径的。
@@ -89,7 +94,8 @@ pprint(sys.path)  打印寻找的目录列表
  - pip install xxx (从pypi下载并安装)
 
 # 上传到pypi.org
-```
+
+```shell
 (使用distutils/setuptools工具)
 Create a file $HOME/.pypirc:
   [distutils]
@@ -126,18 +132,22 @@ twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 ```
 
 # virtualenv
+
 https://pypi.org/project/virtualenv/
 
-```
+```shell
 pip install virtualenv            安装
 virtualenv pip_test_env           创建pip_test_env环境(创建$HOME/.local/share/virtualenv和pip_test_env目录)
 source pip_test_env/bin/activate  激活环境
 deactivate                        恢复环境
 ```
+
 # virtualenvwrapper (依赖virtualenv)
+
 https://pypi.org/project/virtualenvwrapper/
 2020-12-26最高在python3.6上测试过
-```
+
+```shell
 pip install virtualenvwrapper         安装
 export WORKON_HOME=/opt/python3/envs  设置工作目录
 mkdir -p $WORKON_HOME                 创建工作目录
@@ -147,17 +157,20 @@ rmvirtualenv env1                     删除环境
 workon env1                           激活环境
 workon                                列出环境
 ```
+
 # Pipenv: Python Development Workflow for Humans
 整合了pip和virtualenv的功能。
 https://github.com/pypa/pipenv
 
 # Egg包
+
 使用egg包的两个方式：
  - *.egg拷贝到../site-packages后，在../site-packages/easy-install.pth文件中增加一行：./xxxx.egg.
  - 运行时将egg文件添加到环境变量PYTHONPATH。例如PYTHONPATH=xxx.egg python xxx.py.
 
 # Wheel包 (新标准)
-```
+
+```shell
 pip install wheel            安装
 vim setup.cfg                创建此文件配置为wheel格式（可选）
   [bdist_wheel]
@@ -167,11 +180,16 @@ python setup.py bdist_wheel  编译后打包成wheel格式
 
 # pylint
 
+```shell
 pip install pylint
 pip install pylint-gitlab
+```
 
 # pre-commit
 
+[Supported hooks](https://pre-commit.com/hooks.html)
+
+```shell
 pip install pre-commit
 PROJECT/.pre-commit-config.yaml     配置安装的钩子类型
 pre-commit install --install-hooks  安装hook并打印安装位置
@@ -185,7 +203,7 @@ git commit --no-verify              提交时禁用pre-commit
 ~/.cache/pre-commit                 默认CACHE位置
 PRE_COMMIT_HOME                     环境变量，可代替默认Cache位置
 XDG_CACHE_HOME                      环境变量，可代替PRE_COMMIT_HOME位置
-[Supported hooks](https://pre-commit.com/hooks.html)
+```
 
 # commit-msg
 
