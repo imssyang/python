@@ -20,9 +20,10 @@ CXX="/usr/bin/g++" \
     --with-pydebug \
     --with-system-expat \
     --with-system-ffi \
-    --with-ensurepip=yes \
-    CFLAGS="-I/opt/bzip2/include -I/opt/expat/include -I/opt/ffi/include -I/opt/sqlite/include -I/opt/zlib/include" \
-    LDFLAGS="-L/opt/bzip2/lib -L/opt/expat/lib -L/opt/ffi/lib -L/opt/sqlite/lib -L/opt/zlib/lib -Wl,-rpath=/opt/python3/lib,--disable-new-dtags"
+    --with-ensurepip=yes
+
+    #CFLAGS="-I/opt/bzip2/include -I/opt/expat/include -I/opt/ffi/include -I/opt/sqlite/include -I/opt/zlib/include" \
+    #LDFLAGS="-L/opt/bzip2/lib -L/opt/expat/lib -L/opt/ffi/lib -L/opt/sqlite/lib -L/opt/zlib/lib -Wl,-rpath=/opt/python3/lib,--disable-new-dtags"
 
 make -j 8
 make install
