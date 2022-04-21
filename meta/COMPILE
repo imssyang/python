@@ -2,19 +2,27 @@
 # Dependences
 # https://devguide.python.org/setup/#install-dependencies
 apt-get build-dep python3
+apt install libssl-dev zlib1g-dev libncurses5-dev libncursesw5-dev libreadline-dev libsqlite3-dev
+apt install libgdbm-dev libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev libffi-dev
 
 # Compiles
 # http://www.linuxfromscratch.org/blfs/view/svn/general/python3.html
 CXX="/usr/bin/g++" \
 ./configure \
     --prefix=/opt/python3 \
+    --sbindir=/opt/python3/bin \
+    --sysconfdir=/opt/python3/conf \
     --enable-shared \
+    --enable-optimizations \
+    --enable-profiling \
+    --enable-loadable-sqlite-extensions \
     --enable-ipv6 \
+    --with-pydebug \
     --with-system-expat \
     --with-system-ffi \
     --with-ensurepip=yes \
     CFLAGS="-I/opt/bzip2/include -I/opt/expat/include -I/opt/ffi/include -I/opt/sqlite/include -I/opt/zlib/include" \
     LDFLAGS="-L/opt/bzip2/lib -L/opt/expat/lib -L/opt/ffi/lib -L/opt/sqlite/lib -L/opt/zlib/lib -Wl,-rpath=/opt/python3/lib,--disable-new-dtags"
 
-make
+make -j 8
 make install
