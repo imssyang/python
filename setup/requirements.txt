@@ -1,3 +1,6 @@
 #nvidia-pyindex==1.0.9
 pre-commit==2.16.0
 pylint==2.13.5
+pysocks==1.7.1
+virtualenv==20.14.1
+virtualenvwrapper==4.8.4
