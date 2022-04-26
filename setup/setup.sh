@@ -43,23 +43,15 @@ init() {
 
   chown -R root:root $HOME
   chmod 755 $HOME
-}
 
-base() {
   $HOME/bin/python3 -m pip install --upgrade pip setuptools wheel
   $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements.txt
 }
 
-cuda() {
-  $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements-cuda.txt
-}
-
 case "$1" in
   init) init ;;
-  base) base ;;
-  cuda) cuda ;;
   *) SCRIPTNAME="${0##*/}"
-    echo "Usage: $SCRIPTNAME {init|cuda}"
+    echo "Usage: $SCRIPTNAME {init}"
     exit 3
     ;;
 esac
