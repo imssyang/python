@@ -1,0 +1,2 @@
+opencv-contrib-python==4.5.5.64
+pyside6==6.3.0

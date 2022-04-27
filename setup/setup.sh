@@ -48,10 +48,31 @@ init() {
   $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements.txt
 }
 
+deinit() {
+  _rmdir $HOME/envs
+
+  _delete_symlink $HOME/bin/pip
+  _delete_symlink $HOME/bin/python
+  _delete_symlink $HOME/bin/pydoc
+
+  $HOME/bin/pip3 uninstall --no-cache-dir -r $HOME/setup/requirements.txt
+}
+
+docker() {
+  $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements-docker.txt
+}
+
+gui() {
+  $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements-gui.txt
+}
+
 case "$1" in
   init) init ;;
+  deinit) deinit ;;
+  docker) docker ;;
+  gui) gui ;;
   *) SCRIPTNAME="${0##*/}"
-    echo "Usage: $SCRIPTNAME {init}"
+    echo "Usage: $SCRIPTNAME {init|deinit|docker|gui}"
     exit 3
     ;;
 esac
