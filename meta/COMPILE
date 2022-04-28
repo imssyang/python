@@ -16,11 +16,11 @@ CXX="/usr/bin/g++" \
     --enable-optimizations \
     --enable-loadable-sqlite-extensions \
     --enable-ipv6 \
-    --with-pydebug \
     --with-system-expat \
     --with-system-ffi \
     --with-ensurepip=yes
 
+    #--with-pydebug \
     #CFLAGS="-I/opt/bzip2/include -I/opt/expat/include -I/opt/ffi/include -I/opt/sqlite/include -I/opt/zlib/include" \
     #LDFLAGS="-L/opt/bzip2/lib -L/opt/expat/lib -L/opt/ffi/lib -L/opt/sqlite/lib -L/opt/zlib/lib -Wl,-rpath=/opt/python3/lib,--disable-new-dtags"
 
