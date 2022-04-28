@@ -6,6 +6,9 @@ package_paths=(
   /usr/local/lib/python3.8/site-packages
   /opt/python3/lib/python3.8/site-packages
   /opt/python3/sample
+  ~/app/bvc-game-recognition
+  ~/app/bvc-game-recognition/submodule/lol-hero-recoginizer
+  ~/app/bvc-game-recognition/submodule/lol-recoginizer
   $PYTHONPATH
 )
 IFS=:$IFS; export PYTHONPATH="${package_paths[*]}"; IFS=${IFS#?}
