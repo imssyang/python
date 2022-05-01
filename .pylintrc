@@ -80,19 +80,23 @@ confidence=
 # --disable=W".
 disable=bad-inline-option,
         deprecated-pragma,
+        f-string-without-interpolation,
         file-ignored,
         invalid-name,
         locally-disabled,
+        logging-fstring-interpolation,
         missing-class-docstring,
         missing-function-docstring,
         missing-module-docstring,
-        unused-import,
+        no-self-use,
         raw-checker-failed,
         redefined-outer-name,
         super-with-arguments,
         suppressed-message,
         too-few-public-methods,
+        unused-import,
         use-symbolic-message-instead,
+        useless-object-inheritance,
         useless-suppression
 
 # Enable the message, report, category or checker with the given id(s). You can
@@ -421,7 +425,7 @@ indent-after-paren=4
 indent-string='    '
 
 # Maximum number of characters on a single line.
-max-line-length=100
+max-line-length=180
 
 # Maximum number of lines in a module.
 max-module-lines=1000
@@ -537,7 +541,7 @@ exclude-too-few-public-methods=
 ignored-parents=
 
 # Maximum number of arguments for function / method.
-max-args=5
+max-args=10
 
 # Maximum number of attributes for a class (see R0902).
 max-attributes=7
@@ -549,7 +553,7 @@ max-bool-expr=5
 max-branches=12
 
 # Maximum number of locals for function / method body.
-max-locals=15
+max-locals=20
 
 # Maximum number of parents for a class (see R0901).
 max-parents=7
@@ -561,7 +565,7 @@ max-public-methods=20
 max-returns=6
 
 # Maximum number of statements in function / method body.
-max-statements=50
+max-statements=100
 
 # Minimum number of public methods for a class (see R0903).
 min-public-methods=2

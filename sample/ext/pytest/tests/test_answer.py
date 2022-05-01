@@ -1,4 +1,3 @@
-
 # Create your first test
 def inc(x):
     return x + 1

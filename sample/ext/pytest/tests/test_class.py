@@ -1,4 +1,3 @@
-
 # Group multiple tests in a class
 class TestClass:
     def test_one(self):
