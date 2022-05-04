@@ -62,17 +62,17 @@ docker() {
   $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements-docker.txt
 }
 
-gui() {
-  $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements-gui.txt
+host() {
+  $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements-host.txt
 }
 
 case "$1" in
   init) init ;;
   deinit) deinit ;;
   docker) docker ;;
-  gui) gui ;;
+  host) host ;;
   *) SCRIPTNAME="${0##*/}"
-    echo "Usage: $SCRIPTNAME {init|deinit|docker|gui}"
+    echo "Usage: $SCRIPTNAME {init|deinit|docker|host}"
     exit 3
     ;;
 esac
