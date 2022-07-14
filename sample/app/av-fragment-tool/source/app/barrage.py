@@ -8,7 +8,9 @@ from scipy.interpolate import Rbf
 
 
 class BarrageData:
-    def __init__(self, path: str, room: str, from_time: str, to_time: str, weight: float):
+    def __init__(
+        self, path: str, room: str, from_time: str, to_time: str, weight: float
+    ):
         self.path = path
         self.room = room
         self.from_time = from_time
@@ -29,12 +31,12 @@ class BarrageData:
         self._read()
         self._calc()
 
-    def show(self, width = 15, height = 6):
+    def show(self, width=15, height=6):
         if not self.plot_flag:
             self._plots(width, height)
         pyplot.show()
 
-    def save(self, path: str, width = 15, height = 6):
+    def save(self, path: str, width=15, height=6):
         if self.plot_flag:
             return False
         figure = self._plots(width, height)
@@ -56,10 +58,29 @@ class BarrageData:
 
     def _plots(self, width, height):
         figure, ax = pyplot.subplots(figsize=(width, height))
-        ax.plot(self.x, [self.middle_threshold] * len(self.x), linewidth = 1.5, label = "middle")
-        ax.plot(self.x, [self.weight_threshold] * len(self.x), linewidth = 1.5, label = f"weight({self.weight})")
-        ax.plot(self.x_extend, self.y_extend, marker = "o", markersize = 0, markerfacecolor = "white", label = self.room)
-        ax.plot(self.x_extend[self.p_indexs], self.y_weight[self.p_indexs], "bo", markersize = 3)
+        ax.plot(
+            self.x, [self.middle_threshold] * len(self.x), linewidth=1.5, label="middle"
+        )
+        ax.plot(
+            self.x,
+            [self.weight_threshold] * len(self.x),
+            linewidth=1.5,
+            label=f"weight({self.weight})",
+        )
+        ax.plot(
+            self.x_extend,
+            self.y_extend,
+            marker="o",
+            markersize=0,
+            markerfacecolor="white",
+            label=self.room,
+        )
+        ax.plot(
+            self.x_extend[self.p_indexs],
+            self.y_weight[self.p_indexs],
+            "bo",
+            markersize=3,
+        )
         ax.set_xticks(self.x_minute)
         ax.set_xticklabels(self.x_minute_desc, fontsize=8, rotation=60)
 
@@ -67,24 +88,36 @@ class BarrageData:
             x_time = datetime.fromtimestamp(self.x_extend[index])
             x_time_text = x_time.strftime("%H:%M:%S")
             if self._ascent(index) is True:
-                pyplot.annotate(x_time_text,
-                                (self.x_extend[index], self.y_weight[index]),
-                                fontsize = 8, rotation = 60)
+                pyplot.annotate(
+                    x_time_text,
+                    (self.x_extend[index], self.y_weight[index]),
+                    fontsize=8,
+                    rotation=60,
+                )
             elif self._ascent(index) is False:
-                pyplot.annotate(x_time_text,
-                                xy=(self.x_extend[index], self.y_weight[index]),
-                                verticalalignment = "top",
-                                fontsize = 8, rotation = -60)
+                pyplot.annotate(
+                    x_time_text,
+                    xy=(self.x_extend[index], self.y_weight[index]),
+                    verticalalignment="top",
+                    fontsize=8,
+                    rotation=-60,
+                )
 
-        pyplot.fill_between(x = self.x_extend,
-                            y1 = self.y_extend,
-                            y2 = self.y_weight,
-                            where = self.y_extend > self.weight_threshold,
-                            color= "b",
-                            alpha= 0.2)
+        pyplot.fill_between(
+            x=self.x_extend,
+            y1=self.y_extend,
+            y2=self.y_weight,
+            where=self.y_extend > self.weight_threshold,
+            color="b",
+            alpha=0.2,
+        )
         pyplot.xlabel("TIME")
         pyplot.ylabel("NUM")
-        pyplot.title(f"Barrages [{self.from_time}~{self.to_time}]", fontweight ="bold", fontsize = 12)
+        pyplot.title(
+            f"Barrages [{self.from_time}~{self.to_time}]",
+            fontweight="bold",
+            fontsize=12,
+        )
         pyplot.legend()
         self.plot_flag = True
         return figure
@@ -97,7 +130,7 @@ class BarrageData:
 
         csv_items = list()
         with open(self.path, "r") as file:
-            lines = csv.reader(file, delimiter=',')
+            lines = csv.reader(file, delimiter=",")
             for line in lines:
                 room_item = line[0]
                 if room_item != self.room:
@@ -113,14 +146,16 @@ class BarrageData:
                 if not value_item.isnumeric():
                     continue
 
-                csv_items.append(dict(
-                    room = room_item,
-                    time_desc = time_item[-5:],
-                    timestamp = raw_time,
-                    value = int(value_item),
-                ))
+                csv_items.append(
+                    dict(
+                        room=room_item,
+                        time_desc=time_item[-5:],
+                        timestamp=raw_time,
+                        value=int(value_item),
+                    )
+                )
 
-        csv_items.sort(key=lambda item : item["timestamp"])
+        csv_items.sort(key=lambda item: item["timestamp"])
 
         rcs_x_desc = []
         rcs_x = []
@@ -152,16 +187,18 @@ class BarrageData:
             return
 
         y = sorted(self.y)
-        self.middle_threshold = y[len(y)//2] + 1
+        self.middle_threshold = y[len(y) // 2] + 1
         self.weight_threshold = self.weight * self.middle_threshold
 
         x_new = numpy.array(self.x)
         y_new = numpy.array(self.y)
-        rbf = Rbf(x_new, y_new, function = "thin_plate", epsilon=0.1, smooth = 0.0001)
+        rbf = Rbf(x_new, y_new, function="thin_plate", epsilon=0.1, smooth=0.0001)
         self.x_extend = numpy.linspace(x_new.min(), x_new.max(), 10000)
         self.y_extend = rbf(self.x_extend)
         self.y_weight = numpy.array([self.weight_threshold] * len(self.y_extend))
-        self.p_indexs = numpy.argwhere(numpy.diff(numpy.sign(self.y_extend - self.y_weight))).flatten()
+        self.p_indexs = numpy.argwhere(
+            numpy.diff(numpy.sign(self.y_extend - self.y_weight))
+        ).flatten()
 
     def _ascent(self, index):
         y_index = self.y_extend[index]

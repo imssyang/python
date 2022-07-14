@@ -11,8 +11,8 @@ from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
 
 
 def add_logging_handler(fd, level=logging.INFO):
-    fmt = '[%(levelname)1.1s %(asctime)s %(module)-16.16s:%(lineno)4d] %(message)s'
-    date_fmt = '%y%m%d %H:%M:%S'
+    fmt = "[%(levelname)1.1s %(asctime)s %(module)-16.16s:%(lineno)4d] %(message)s"
+    date_fmt = "%y%m%d %H:%M:%S"
     handler = logging.StreamHandler(fd)
     handler.setLevel(level)
     handler.setFormatter(logging.Formatter(fmt, date_fmt))
@@ -38,7 +38,7 @@ class VXCodeUtility:
         result = VXCodeUtility._run_subprocess(f"pgrep -P {pid}")
         if result["retcode"]:
             return []
-        child_processes = result["stdout"].split('\n')
+        child_processes = result["stdout"].split("\n")
         child_pids = list(filter(None, child_processes))
         logging.info(f"pid: {pid} has childs: {child_pids}")
         return child_pids
@@ -113,12 +113,16 @@ class VXCodeUtility:
     def _run_subprocess(cls, cmd, timeout=10, shell=False):
         result = {"cmd": cmd}
         _cmd = cmd if shell else shlex.split(cmd)
-        with Popen(_cmd,
-                   shell=shell,
-                   stdin=None, stdout=PIPE, stderr=PIPE,
-                   errors="replace",
-                   encoding="utf-8",
-                   universal_newlines=True) as process:
+        with Popen(
+            _cmd,
+            shell=shell,
+            stdin=None,
+            stdout=PIPE,
+            stderr=PIPE,
+            errors="replace",
+            encoding="utf-8",
+            universal_newlines=True,
+        ) as process:
             try:
                 exec_timeout = False
                 stdout, stderr = process.communicate(timeout=timeout)
@@ -131,19 +135,21 @@ class VXCodeUtility:
                 raise
             finally:
                 retcode = cls.RET_TIMEOUT if exec_timeout else process.poll()
-        result.update({
-            "retcode": retcode,
-            "timeout": timeout,
-            "stdout": stdout,
-            "stderr": stderr,
-        })
+        result.update(
+            {
+                "retcode": retcode,
+                "timeout": timeout,
+                "stdout": stdout,
+                "stderr": stderr,
+            }
+        )
         return result
 
 
 class VXCodeProcess:
     def __init__(self, target, name, args=(), spawn=False):
         if spawn:
-            ctx = mp.get_context('spawn')
+            ctx = mp.get_context("spawn")
             self.queue = ctx.Queue()
             self.process = ctx.Process(None, target, name, (self, *args))
         else:
@@ -181,7 +187,9 @@ class VXCodeProcess:
             if msg != value:
                 raise ValueError(f"{value} not match {msg} from {self.name}-{self.pid}")
         except Empty as e:
-            raise TimeoutError(f"timeout when get msg from {self.name}-{self.pid}") from e
+            raise TimeoutError(
+                f"timeout when get msg from {self.name}-{self.pid}"
+            ) from e
         return msg
 
     def put_msg(self, value):

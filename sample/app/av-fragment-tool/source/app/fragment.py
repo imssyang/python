@@ -18,8 +18,9 @@ class FragmentData:
             for data in self.dataset:
                 from_time = data["from"].timestamp()
                 to_time = data["to"].timestamp()
-                if (from_time <= fragment[0] and fragment[0] <= to_time) or \
-                   (from_time <= fragment[1] and fragment[1] <= to_time):
+                if (from_time <= fragment[0] and fragment[0] <= to_time) or (
+                    from_time <= fragment[1] and fragment[1] <= to_time
+                ):
                     if not data1:
                         data1 = data
                     elif not data2:
@@ -39,9 +40,11 @@ class FragmentData:
         from_time_text = from_time.strftime("%Y%m%d-%H%M%S")
         to_time = datetime.fromtimestamp(fragment_end)
         to_time_text = to_time.strftime("%H%M%S")
-        cmd = f"assets/bin/ffmpeg4 -y -nostdin -hide_banner -v info -probesize 400000000 " \
-              f"-i {path1} " \
-              f"-ss {ss_param} -to {to_param} -c copy out/{self.room}_{from_time_text}_{to_time_text}.flv"
+        cmd = (
+            f"assets/bin/ffmpeg4 -y -nostdin -hide_banner -v info -probesize 400000000 "
+            f"-i {path1} "
+            f"-ss {ss_param} -to {to_param} -c copy out/{self.room}_{from_time_text}_{to_time_text}.flv"
+        )
 
         try:
             print(f"[FRAGMENT]: {cmd}")

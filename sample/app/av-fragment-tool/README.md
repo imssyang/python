@@ -11,4 +11,3 @@ pip3 install -r requirements.txt
 # Release Note
 * v0.0.1 @2022-7-8
     1. first version
-
