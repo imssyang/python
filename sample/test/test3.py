@@ -2,6 +2,7 @@ import os
 
 os.environ["VXCODE_DRY_RUN"] = "1"
 
+<<<<<<< HEAD
 print(os.getenv("VXCODE_POOL_SIZE"))
 print(int(os.getenv("VXCODE_DRY_RUN")))
 
@@ -16,3 +17,9 @@ tt_time = datetime.fromtimestamp(timestamp)
 print(tt_time)  # 2018-06-12 17:55:22
 at_time = tt_time.strftime("%m/%d/%Y %H:%M:%S")
 print(at_time)  # 06/12/2018 17:55:22
+=======
+print(os.getenv('VXCODE_POOL_SIZE'))
+print(int(os.getenv('VXCODE_DRY_RUN')))
+
+
+>>>>>>> 9b71617f98d598638f7cf2cee366ed05c980c5b6
