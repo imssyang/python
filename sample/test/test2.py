@@ -1,33 +1,6 @@
-import copy
+import json
 
-class VXCodeRoute:
-    PREFER_GPU = False
-    ALLOW_EDGE = True
-    IS_PRIVILEGED = False
-    ROLE = ""
-    HIGH_IO = False
-    USERS_PRE_DEFAULT = ["all", "pre"]
-    USERS_RED_CHANNEL = ["vxcode_high_priority", "vxcode_red_channel"]
+personDict = {'realname': 'trans-live_392836434_52698792-2022-08-21-20:53:15', 'object': {'url': 'http://uposgate-vip.bilivideo.com:2281/livechunks/trans-live_392836434_52698792-2022-08-21-20:53:15.flv', 'filesize': 221267957, 'object_id': 'trans-a7e57e20-2150-11ed-b8de-549f350efd84-116', 'md5': '76060bce27f137b6c248273bd862e247'}, 'buid': 'VOD_LPL', 'force_local': True, 'recv_uts': 1661086581.62917, 'av_samples': {}, 'av_covers': {}, 'profiles': [{'profile': '116', 'video': {'encode': {'gop_max': 300, 'height': 1080, 'bit_rate': 5836800, 'frame_rate': 60, 'bufsize': 12000000, 'x264opts': 'psy=0:', 'gop_min': 300, 'width': 1920, 'maxrate': 12000000, 'crf': 0, 'vsync': 3, 'bili_preset': 'balance', 'codec': 'h264'}, 'filter': {}}, 'audio': {'encode': {'codec': 'copy'}, 'filter': {}}, 'container': {'duration': 0, 'start_time': 0, 'segment_time': 0, 'format': 'flv'}, 'save_to': 'upos:livechunks/trans-live_392836434_52698792-2022-08-21-20:53:15'}], 'filename': 'trans-live_392836434_52698792-2022-08-21-20:53:15', 'priority': 0, 'callback': 'http://10.69.74.12/t_callback', 'role': 'fastrec'}
 
-    @classmethod
-    def route(cls, task_request, has_hdfs=False):
-        task_object = task_request["object"]
-        object_url = task_object["url"]
-        task_priority = task_request["priority"]
-        red_channel = task_request.get("red_channel", False)
-        info = {}
-        if True:
-            info["users"] = copy.copy(cls.USERS_PRE_DEFAULT)
-        if red_channel:
-            info["users"] += cls.USERS_RED_CHANNEL
-        if has_hdfs:
-            info["allow_edge"] = False
-        print(f"{info}")
-        return info
-
-
-for i in range(10):
-    VXCodeRoute.route({'red_channel': True, 'object': {'url': '111'}, 'priority': 1})
-    print(f"{VXCodeRoute.USERS_PRE_DEFAULT}")
-
-
+app_json = json.dumps(personDict, sort_keys=True)
+print(app_json)
