@@ -220,6 +220,12 @@ pip3 install torch torchvision torchaudio --extra-index-url https://download.pyt
 
 https://www.riverbankcomputing.com/
 
+# http
+
+```bash
+python -m http.server 8000 --bind 127.0.0.1 --directory /tmp/
+```
+
 # 示例
 [Welcome to The Hitchhiker’s Guide to Packaging](https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html)
 [Awesome Python](https://python.libhunt.com/)
