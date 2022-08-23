@@ -39,3 +39,7 @@ export WORKON_HOME=/opt/python3/envs
 if [[ -f /opt/python3/bin/virtualenvwrapper.sh ]]; then
   source /opt/python3/bin/virtualenvwrapper.sh
 fi
+
+# flask
+export FLASK_APP=/opt/python3/sample/ext/flask/app.py
+export FLASK_DEBUG=1
