@@ -41,5 +41,4 @@ if [[ -f /opt/python3/bin/virtualenvwrapper.sh ]]; then
 fi
 
 # flask
-export FLASK_APP=/opt/python3/sample/ext/flask/app.py
 export FLASK_DEBUG=1
