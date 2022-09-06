@@ -18,7 +18,8 @@ class Logger(metaclass=Singleton):
     def __init__(self):
         logging.basicConfig(
             level=logging.INFO,
-            format="%(asctime)s [%(threadName)s %(message)s",
+            format="[%(levelname)1.1s %(asctime)s.%(msecs)03d %(threadName)s %(message)s",
+            datefmt="%y%m%d %H:%M:%S",
             handlers=[
                 logging.StreamHandler()
             ])
@@ -35,3 +36,14 @@ class Logger(metaclass=Singleton):
     def info(self, message, *args):
         message = "{}:{}:{}] {}".format(*self.__get_call_info(), message)
         self.logger.info(message, *args)
+
+
+if __name__ == "__main__":
+    byte_string = '\xc3\xb4'
+    unicode_string = u'щ'
+
+    logger = Logger()
+    logger.info(f"11111")
+    logger.info(f"中文")
+    logger.info(f"{byte_string}")
+    logger.info(f"{unicode_string}")
