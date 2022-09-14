@@ -5,26 +5,14 @@ personDict = {'realname': 'trans-live_392836434_52698792-2022-08-21-20:53:15', '
 app_json = json.dumps(personDict, sort_keys=True)
 print(app_json)
 
-O = {'TOP': {'team1': [], 'tower1': [], 'property1': ['17.2k', 0.86696], 'score1': [], 'score2': [], 'property2': ['14.2k', 0.94939], 'tower2': [], 'team2': [], 'time': ['05:49', 0.96117], 'event': ['123', 0.9258], 'killee': ['444', 0.9093374446523449]}}
-event = O["TOP"].get("event", [])
-killee = O["TOP"].get("killee", [])
-print(event, killee)
-if event or killee:
-    result = dict(event = event, killee = killee)
-    print(result)
+class T:
+    DEFAULT = [1, 2]
+    def get(self, *v):
+        r = self.DEFAULT
+        r += v
+        return r
 
-    target = None
-    event = result.get("event")
-    if event and len(event) == 2:
-        target = event
-    print(target)
-    killee = result.get("killee")
-    if killee and len(killee) == 2:
-        if not target:
-            target = killee
-            print(target)
-        else:
-            target[0] += "-" + killee[0]
-            target[1] = float(event[1] + killee[1]) / 2
-    print(target)
-
+t = T()
+print(t.get(3)) #[1, 2, 3]
+print(t.get(3)) #[1, 2, 3, 3]
+print(t.get(3)) #[1, 2, 3, 3, 3]

@@ -1,25 +1,49 @@
-import os
+from typing import Set
 
-os.environ["VXCODE_DRY_RUN"] = "1"
-
-<<<<<<< HEAD
-print(os.getenv("VXCODE_POOL_SIZE"))
-print(int(os.getenv("VXCODE_DRY_RUN")))
-
-from datetime import datetime
-
-now = datetime.now()  # current date and time
-now_time = now.strftime("%Y-%m-%d %H:%M:%S")
-print(now_time)  # 2022-07-04 19:58:40
-
-timestamp = 1528797322
-tt_time = datetime.fromtimestamp(timestamp)
-print(tt_time)  # 2018-06-12 17:55:22
-at_time = tt_time.strftime("%m/%d/%Y %H:%M:%S")
-print(at_time)  # 06/12/2018 17:55:22
-=======
-print(os.getenv('VXCODE_POOL_SIZE'))
-print(int(os.getenv('VXCODE_DRY_RUN')))
+from pydantic import (
+    BaseModel,
+    BaseSettings,
+    PyObject,
+    RedisDsn,
+    PostgresDsn,
+    AmqpDsn,
+    Field,
+)
 
 
->>>>>>> 9b71617f98d598638f7cf2cee366ed05c980c5b6
+class SubModel(BaseModel):
+    foo = 'bar'
+    apple = 1
+
+
+class Settings(BaseSettings):
+    auth_key: str = str()
+    api_key: str = str() #Field(..., env='my_api_key')
+
+    redis_dsn: RedisDsn = 'redis://user:pass@localhost:6379/1'
+    pg_dsn: PostgresDsn = 'postgres://user:pass@localhost:5432/foobar'
+    amqp_dsn: AmqpDsn = 'amqp://user:pass@localhost:5672/'
+
+    special_function: PyObject = 'math.cos'
+
+    # to override domains:
+    # export my_prefix_domains='["foo.com", "bar.com"]'
+    domains: Set[str] = set()
+
+    # to override more_settings:
+    # export my_prefix_more_settings='{"foo": "x", "apple": 1}'
+    more_settings: SubModel = SubModel()
+
+    class Config:
+        env_prefix = 'my_prefix_'  # defaults to no prefix, i.e. ""
+        fields = {
+            'auth_key': {
+                'env': 'my_auth_key',
+            },
+            'redis_dsn': {
+                'env': ['service_redis_dsn', 'redis_url']
+            }
+        }
+
+
+print(Settings().dict())
