@@ -1,0 +1,15 @@
+[Unit]
+Description=Jupyter Notebook
+Documentation=https://jupyterlab.readthedocs.io
+
+[Service]
+Type=simple
+User=root
+Group=root
+PIDFile=/opt/python3/share/run/jupyter.pid
+ExecStart=/opt/python3/bin/jupyter lab --config /opt/python3/conf/jupyter_lab_config.py
+Restart=on-failure
+TimeoutSec=60s
+
+[Install]
+WantedBy=multi-user.target

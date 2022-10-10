@@ -42,3 +42,4 @@ fi
 
 # flask
 export FLASK_DEBUG=1
+

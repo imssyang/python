@@ -2,6 +2,7 @@
 
 APP=python3
 HOME=/opt/$APP
+SYSD=/etc/systemd/system
 
 _mkdir() {
   name=$1
@@ -34,8 +35,35 @@ _delete_symlink() {
   fi
 }
 
+_enable_service() {
+  name=$1
+  _create_symlink $HOME/setup/$name $SYSD/$name
+  systemctl enable $name
+  systemctl daemon-reload
+}
+
+_disable_service() {
+  name=$1
+  systemctl disable $name
+  systemctl daemon-reload
+  _delete_symlink $SYSD/$name
+}
+
+_start_service() {
+  name=$1
+  systemctl start $name
+  systemctl status $name
+}
+
+_stop_service() {
+  name=$1
+  systemctl stop $name
+  systemctl status $name
+}
+
 init() {
   _mkdir $HOME/envs
+  _mkdir $HOME/share/run
 
   _create_symlink $HOME/bin/pip3     $HOME/bin/pip
   _create_symlink $HOME/bin/python3  $HOME/bin/python
@@ -44,18 +72,27 @@ init() {
   chown -R root:root $HOME
   chmod 755 $HOME
 
-  $HOME/bin/python3 -m pip install --upgrade pip setuptools wheel
-  $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements.txt
+  if [[ $1 == tsinghua ]]; then
+    INDEX_URL="-i https://pypi.tuna.tsinghua.edu.cn/simple"
+  fi
+
+  $HOME/bin/python3 -m pip install --upgrade pip setuptools wheel $INDEX_URL
+  $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements.txt $INDEX_URL
+
+  _enable_service jupyter-lab.service
 }
 
 deinit() {
   _rmdir $HOME/envs
+  _rmdir $HOME/share/run
 
   _delete_symlink $HOME/bin/pip
   _delete_symlink $HOME/bin/python
   _delete_symlink $HOME/bin/pydoc
 
   $HOME/bin/pip3 uninstall --no-cache-dir -r $HOME/setup/requirements.txt
+
+  _disable_service jupyter-lab.service
 }
 
 docker() {
@@ -66,13 +103,28 @@ host() {
   $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements-host.txt
 }
 
+start() {
+  _start_service jupyter-lab.service
+}
+
+stop() {
+  _stop_service jupyter-lab.service
+}
+
+show() {
+  systemctl status jupyter-lab.service
+}
+
 case "$1" in
-  init) init ;;
-  deinit) deinit ;;
-  docker) docker ;;
-  host) host ;;
+  init) shift; init $@ ;;
+  deinit) shift; deinit $@ ;;
+  docker) shift; docker $@ ;;
+  host) shift; host $@ ;;
+  start) shift; start $@ ;;
+  stop) shift; stop $@ ;;
+  show) shift; show $@ ;;
   *) SCRIPTNAME="${0##*/}"
-    echo "Usage: $SCRIPTNAME {init|deinit|docker|host}"
+    echo "Usage: $SCRIPTNAME {init|deinit|docker|host|start|stop|show}"
     exit 3
     ;;
 esac
