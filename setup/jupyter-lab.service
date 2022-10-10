@@ -6,6 +6,7 @@ Documentation=https://jupyterlab.readthedocs.io
 Type=simple
 User=root
 Group=root
+Environment="SHELL=/usr/bin/zsh"
 PIDFile=/opt/python3/share/run/jupyter.pid
 ExecStart=/opt/python3/bin/jupyter lab --config /opt/python3/conf/jupyter_lab_config.py
 Restart=on-failure
