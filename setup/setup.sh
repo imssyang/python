@@ -4,6 +4,10 @@ APP=python3
 HOME=/opt/$APP
 SYSD=/etc/systemd/system
 
+if [[ $2 == tsinghua ]]; then
+  INDEX_URL="-i https://pypi.tuna.tsinghua.edu.cn/simple"
+fi
+
 _mkdir() {
   name=$1
   if [[ ! -d $name ]]; then
@@ -73,16 +77,8 @@ init() {
   chown -R root:root $HOME
   chmod 755 $HOME
 
-  if [[ $1 == tsinghua ]]; then
-    INDEX_URL="-i https://pypi.tuna.tsinghua.edu.cn/simple"
-  fi
-
   $HOME/bin/python3 -m pip install --upgrade pip setuptools wheel $INDEX_URL
   $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements.txt $INDEX_URL
-
-  python3 -m bash_kernel.install
-
-  _enable_service jupyter-lab.service
 }
 
 deinit() {
@@ -94,25 +90,43 @@ deinit() {
   _delete_symlink $HOME/bin/python
   _delete_symlink $HOME/bin/pydoc
 
-  $HOME/bin/pip3 uninstall --no-cache-dir -r $HOME/setup/requirements.txt
+  $HOME/bin/pip3 uninstall --no-cache-dir -r $HOME/setup/requirements.txt $INDEX_URL
 
   _disable_service jupyter-lab.service
 }
 
 docker() {
-  $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements-docker.txt
+  $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements-docker.txt $INDEX_URL
 }
 
 host() {
-  $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements-host.txt
+  $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements-host.txt $INDEX_URL
 }
 
-jupyter() {
-  jupyter labextension install @jupyterlab/apputils@3.4.8
-  jupyter labextension install @jupyterlab/celltags@3.4.8
-  jupyter labextension install @jupyterlab/debugger@3.4.8
+_labextensions=(
+  @mflevine/jupyterlab_html
+  # https://github.com/jupyterlab/jupyterlab-latex
+  # https://github.com/mflevine/jupyterlab_html
+  # https://github.com/QuantStack/jupyterlab-drawio
+  # https://github.com/jupyterlab/jupyter-renderers
+  # https://github.com/bokeh/jupyter_bokeh
+  # https://github.com/lckr/jupyterlab-variableInspector
+  # https://github.com/matplotlib/ipympl
+  # https://github.com/microsoft/gather
+)
 
-  jupyter labextension install @krassowski/jupyterlab-lsp@3.10.2
+jupyter() {
+  $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements-jupyter.txt $INDEX_URL
+
+  set -x
+  for extname in "${_labextensions[@]}"; do
+    $HOME/bin/jupyter labextension install $extname --dev-build=False --minimize=False
+  done
+  set +x
+
+  python3 -m bash_kernel.install
+
+  _enable_service jupyter-lab.service
 }
 
 start() {
@@ -132,11 +146,12 @@ case "$1" in
   deinit) shift; deinit $@ ;;
   docker) shift; docker $@ ;;
   host) shift; host $@ ;;
+  jupyter) shift; jupyter $@ ;;
   start) shift; start $@ ;;
   stop) shift; stop $@ ;;
   show) shift; show $@ ;;
   *) SCRIPTNAME="${0##*/}"
-    echo "Usage: $SCRIPTNAME {init|deinit|docker|host|start|stop|show}"
+    echo "Usage: $SCRIPTNAME {init|deinit|docker|host|jupyter|start|stop|show}"
     exit 3
     ;;
 esac

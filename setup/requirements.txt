@@ -3,6 +3,7 @@ bash_kernel==0.8.0
 click==8.0.2
 flask==2.2.2
 jupyterlab==3.4.8
+jupyterlab-latex==3.1.0
 jupyterlab-lsp==3.10.2
 meson==0.63.0
 pandas==1.4.2
@@ -10,6 +11,7 @@ pre-commit==2.16.0
 pylint==2.13.5
 pysocks==1.7.1
 pytest==7.1.2
+python-lsp-server[all]==1.5.0
 shapely==1.8.1
 tqdm==4.64.0
 virtualenv==20.14.1
