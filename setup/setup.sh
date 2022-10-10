@@ -62,6 +62,7 @@ _stop_service() {
 }
 
 init() {
+  _mkdir $HOME/data
   _mkdir $HOME/envs
   _mkdir $HOME/share/run
 
@@ -83,6 +84,7 @@ init() {
 }
 
 deinit() {
+  _rmdir $HOME/data
   _rmdir $HOME/envs
   _rmdir $HOME/share/run
 

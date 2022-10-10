@@ -45,4 +45,6 @@ export FLASK_DEBUG=1
 
 # jupyter
 export JUPYTER_CONFIG_DIR=/opt/python3/conf/jupyter
+export JUPYTER_DATA_DIR=/opt/python3/data/jupyter
+export JUPYTER_RUNTIME_DIR=/opt/python3/data/jupyter/runtime
 

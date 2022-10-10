@@ -8,6 +8,8 @@ User=root
 Group=root
 Environment="SHELL=/usr/bin/zsh"
 Environment="JUPYTER_CONFIG_DIR=/opt/python3/conf/jupyter"
+Environment="JUPYTER_DATA_DIR=/opt/python3/data/jupyter"
+Environment="JUPYTER_RUNTIME_DIR=/opt/python3/data/jupyter/runtime"
 PIDFile=/opt/python3/share/run/jupyter.pid
 ExecStart=/opt/python3/bin/jupyter lab --config /opt/python3/conf/jupyter/jupyter_lab_config.py
 Restart=on-failure
