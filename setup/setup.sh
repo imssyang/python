@@ -80,6 +80,8 @@ init() {
   $HOME/bin/python3 -m pip install --upgrade pip setuptools wheel $INDEX_URL
   $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements.txt $INDEX_URL
 
+  python3 -m bash_kernel.install
+
   _enable_service jupyter-lab.service
 }
 
