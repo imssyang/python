@@ -234,6 +234,7 @@ $ python -c "from jupyter_server.auth import passwd; print(passwd('XXX'))"
 $ vi jupyter_lab_config.py
 c.ServerApp.password = u'argon2:$argon2id$v=19$m=10240,t=10,p=8$nfU35Ct7vbjCiWxPhxLCMg$T1TSPT23ZvKfi7ykHioUSz/rbkvkTVClFWu5F7mZROQ'
 ```
+[Common Directories and File Locations](https://docs.jupyter.org/en/latest/use/jupyter-directories.html)
 
 # 示例
 [Welcome to The Hitchhiker’s Guide to Packaging](https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html)
