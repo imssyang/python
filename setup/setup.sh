@@ -107,6 +107,14 @@ host() {
   $HOME/bin/pip3 install --no-cache-dir -r $HOME/setup/requirements-host.txt
 }
 
+jupyter() {
+  jupyter labextension install @jupyterlab/apputils@3.4.8
+  jupyter labextension install @jupyterlab/celltags@3.4.8
+  jupyter labextension install @jupyterlab/debugger@3.4.8
+
+  jupyter labextension install @krassowski/jupyterlab-lsp@3.10.2
+}
+
 start() {
   _start_service jupyter-lab.service
 }

@@ -1,6 +1,8 @@
 # Directory in archive file
 archive
 bin
+conf/jupyter/lab/workspaces/default*
+conf/jupyter/migrated
 data/jupyter/
 data/jupyter/runtime/
 envs
