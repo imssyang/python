@@ -1,6 +1,7 @@
 # Directory in archive file
 archive
 bin
+data/jupyter/
 data/jupyter/runtime/
 envs
 gmon.out
