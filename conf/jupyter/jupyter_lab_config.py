@@ -997,7 +997,7 @@ c.ServerApp.quit_button = False
 
 ## The directory to use for notebooks and kernels.
 #  Default: ''
-c.ServerApp.root_dir = '/root/.note'
+c.ServerApp.root_dir = '/root/.note/jupyter'
 
 ## The session manager class to use.
 #  Default: 'builtins.object'
