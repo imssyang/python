@@ -1,5 +1,3 @@
-
-
 class Widget(object):
     def __init__(self, name):
         print("\n__init__")

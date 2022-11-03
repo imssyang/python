@@ -2,7 +2,7 @@ import importlib.util
 import sys
 
 # For illustrative purposes.
-name = 'itertools'
+name = "itertools"
 
 print(importlib.util.find_spec(name))
 

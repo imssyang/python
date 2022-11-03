@@ -3,7 +3,7 @@ from app import widget_func as Widget
 
 
 def init():
-    Widget.init('The widget')
+    Widget.init("The widget")
 
 
 def clean():

@@ -2,7 +2,6 @@ import unittest
 
 
 class NumbersTest(unittest.TestCase):
-
     def test_even(self):
         """
         Test that numbers between 0 and 5 are all even.

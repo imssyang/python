@@ -1,7 +1,10 @@
+# pylint: disable=import-error
 import emb
+
 print("Number of arguments", emb.numargs())
 
-def multiply(a,b):
+
+def multiply(a, b):
     print("Will compute", a, "times", b)
     c = 0
     for i in range(0, a):

@@ -3,7 +3,6 @@ import unittest
 
 
 class SkipTestCase(unittest.TestCase):
-
     @unittest.skip("demonstrating skipping")
     def test_nothing(self):
         self.fail("shouldn't happen")

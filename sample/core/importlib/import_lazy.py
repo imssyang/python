@@ -1,5 +1,7 @@
 import sys
 import importlib.util
+
+
 def lazy_import(name):
     spec = importlib.util.find_spec(name)
     loader = importlib.util.LazyLoader(spec.loader)
@@ -9,6 +11,7 @@ def lazy_import(name):
     loader.exec_module(module)
     return module
 
+
 lazy_typing = lazy_import("typing")
-print(lazy_typing)                # a real module object
+print(lazy_typing)  # a real module object
 print(lazy_typing.TYPE_CHECKING)  # but it is not loaded in memory yet

@@ -1,11 +1,14 @@
 import logging
 import sys
 
+
 class Logging:
     def __init__(self, name=None):
         self.name = name
         self.level = logging.INFO
-        self.fmt = "[%(levelname)1.1s %(asctime)s.%(msecs)03d %(threadName)s %(message)s"
+        self.fmt = (
+            "[%(levelname)1.1s %(asctime)s.%(msecs)03d %(threadName)s %(message)s"
+        )
         self.datefmt = "%y%m%d %H:%M:%S"
         logging.basicConfig(level=self.level, format=self.fmt, datefmt=self.datefmt)
         self.add_handler(logging.getLogger(name), sys.stdout)
@@ -28,10 +31,11 @@ class Logging:
         logger = logging.getLogger(self.name)
         print(logger.handlers)
 
+
 if __name__ == "__main__":
     Logging()
-    byte_string = '\xc3\xb4'
-    unicode_string = u'щ'
+    byte_string = "\xc3\xb4"
+    unicode_string = "щ"
     logging.info(f"11111")
     logging.info(f"中文")
     logging.info(f"{byte_string}")

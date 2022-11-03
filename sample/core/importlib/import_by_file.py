@@ -3,6 +3,7 @@ import sys
 
 # For illustrative purposes.
 import tokenize
+
 file_path = tokenize.__file__
 module_name = tokenize.__name__
 print(f"file_path: {file_path} module_name: {module_name}")

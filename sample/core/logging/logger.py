@@ -20,10 +20,9 @@ class Logger(metaclass=Singleton):
             level=logging.INFO,
             format="[%(levelname)1.1s %(asctime)s.%(msecs)03d %(threadName)s %(message)s",
             datefmt="%y%m%d %H:%M:%S",
-            handlers=[
-                logging.StreamHandler()
-            ])
-        self.logger = logging.getLogger(__name__ + '.logger')
+            handlers=[logging.StreamHandler()],
+        )
+        self.logger = logging.getLogger(__name__ + ".logger")
 
     @staticmethod
     def __get_call_info():
@@ -38,11 +37,12 @@ class Logger(metaclass=Singleton):
         self.logger.info(message, *args)
 
 
-if __name__ == "__main__":
-    byte_string = '\xc3\xb4'
-    unicode_string = u'щ'
+logger = Logger()
 
-    logger = Logger()
+if __name__ == "__main__":
+    byte_string = "\xc3\xb4"
+    unicode_string = "щ"
+
     logger.info(f"11111")
     logger.info(f"中文")
     logger.info(f"{byte_string}")
