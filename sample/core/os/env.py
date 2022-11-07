@@ -14,4 +14,9 @@ def show_envs():
         print(f"{k}: {v}")
 
 
+def add_env():
+    s = int(os.environ.setdefault("PROMETHEUS_ROUND_INTERVAL", "10"))
+    print(s, type(s))
+
+
 show_envs()
