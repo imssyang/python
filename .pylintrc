@@ -79,6 +79,7 @@ confidence=
 # no Warning level messages displayed, use "--disable=all --enable=classes
 # --disable=W".
 disable=bad-inline-option,
+        broad-except,
         consider-using-enumerate,
         consider-using-f-string,
         consider-using-with,
@@ -97,6 +98,7 @@ disable=bad-inline-option,
         missing-function-docstring,
         missing-module-docstring,
         no-self-use,
+        pointless-string-statement,
         protected-access,
         raw-checker-failed,
         redefined-builtin,
