@@ -26,3 +26,7 @@ CXX="/usr/bin/g++" \
 
 make -j 8
 make install
+
+# uwsgi
+apt install python2-dev
+pip3 install uwsgi
