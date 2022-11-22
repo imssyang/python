@@ -1,0 +1,14 @@
+[Unit]
+Description=uWSGI Instance to server Flask
+Documentation=https://uwsgi-docs.readthedocs.io
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/root/.blog/flask
+ExecStart=/opt/python3/bin/uwsgi --ini /root/.blog/flask/uwsgi.ini
+
+[Install]
+WantedBy=multi-user.target

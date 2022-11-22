@@ -93,6 +93,7 @@ deinit() {
   $HOME/bin/pip3 uninstall --no-cache-dir -r $HOME/setup/requirements.txt $INDEX_URL
 
   _disable_service jupyter-lab.service
+  _disable_service flask.service
 }
 
 docker() {
@@ -129,6 +130,10 @@ jupyter() {
   _enable_service jupyter-lab.service
 }
 
+flask() {
+  _enable_service flask.service
+}
+
 start() {
   _start_service jupyter-lab.service
 }
@@ -147,11 +152,12 @@ case "$1" in
   docker) shift; docker $@ ;;
   host) shift; host $@ ;;
   jupyter) shift; jupyter $@ ;;
+  flask) shift; flask $@ ;;
   start) shift; start $@ ;;
   stop) shift; stop $@ ;;
   show) shift; show $@ ;;
   *) SCRIPTNAME="${0##*/}"
-    echo "Usage: $SCRIPTNAME {init|deinit|docker|host|jupyter|start|stop|show}"
+    echo "Usage: $SCRIPTNAME {init|deinit|docker|host|jupyter|flask|start|stop|show}"
     exit 3
     ;;
 esac
