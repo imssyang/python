@@ -15,9 +15,9 @@ eval "optbin -s /opt/python3/bin"
 eval "optman -s /opt/python3/share/man"
 eval "optpkg -s /opt/python3/lib/pkgconfig"
 eval "optlib -s /opt/python3/lib"
-eval "optlib -s /opt/python3/lib/python3.8/config-3.8-x86_64-linux-gnu"
-eval "optlib -s /opt/python3/lib/python3.8/lib-dynload"
-eval "optlib -s /opt/python3/lib/python3.8/site-packages"
+#eval "optlib -s /opt/python3/lib/python3.8/config-3.8-x86_64-linux-gnu"
+#eval "optlib -s /opt/python3/lib/python3.8/lib-dynload"
+#eval "optlib -s /opt/python3/lib/python3.8/site-packages"
 
 # pip
 export PIP_CONFIG_FILE=/opt/python3/conf/pip.conf
@@ -47,4 +47,7 @@ export FLASK_DEBUG=1
 export JUPYTER_CONFIG_DIR=/opt/python3/conf/jupyter
 export JUPYTER_DATA_DIR=/opt/python3/data/jupyter
 export JUPYTER_RUNTIME_DIR=/opt/python3/data/jupyter/runtime
+
+# alias
+alias uwsgitop="uwsgitop localhost:2031"
 

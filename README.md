@@ -239,6 +239,16 @@ $ jupyter labextension uninstall @jupyterlab/celltags-extension
 ```
 [Common Directories and File Locations](https://docs.jupyter.org/en/latest/use/jupyter-directories.html)
 
+# uwsgi
+
+```bash
+pip3 install uwsgi     (maybe)
+pip3 install uwsgitop
+
+uwsgi ... --stats :5001
+uwsgitop localhost:5001
+```
+
 # 示例
 [Welcome to The Hitchhiker’s Guide to Packaging](https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html)
 [Awesome Python](https://python.libhunt.com/)

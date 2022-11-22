@@ -28,5 +28,13 @@ make -j 8
 make install
 
 # uwsgi
-apt install python2-dev
-pip3 install uwsgi
+#apt install python2-dev
+#pip3 install uwsgi
+vi uwsgi-2.0.20/plugins/python/uwsgiplugin.py
+  16 #CFLAGS = ['-I' + sysconfig.get_python_inc(), '-I' + sysconfig.get_python_inc(plat_specific=True) ]
+  17 #LDFLAGS = []
+  18 CFLAGS = ['-I/opt/python3/include/python3.8']
+  19 LDFLAGS = ['-L/opt/python3/lib']
+python3 uwsgiconfig.py --build
+python3 setup.py install
+

@@ -1,5 +1,7 @@
 # Not archived by opt
+app
 archive
 envs
 pipx
 sample
+share/jupyter

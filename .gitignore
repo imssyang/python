@@ -14,5 +14,7 @@ share
 **/__pycache__
 **/*.egg-info
 **/*.pyc
+**/*.log
+sample/**/*.pid
 !sample/**/bin
 
