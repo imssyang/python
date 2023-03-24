@@ -1,4 +1,5 @@
 # Directory in archive file
+app/av-tool/work/
 archive
 bin
 conf/jupyter/lab/workspaces/default*
