@@ -2,13 +2,22 @@ import logging
 import sys
 
 
+class MyFormatter(logging.Formatter):
+    def __init__(self, fmt=None, datefmt=None, extra_fields=None):
+        super().__init__(fmt, datefmt)
+        self.extra_fields = extra_fields or {}
+
+    def format(self, record):
+        for field, value in self.extra_fields.items():
+            setattr(record, field, value)
+        return super().format(record)
+
+
 class Logging:
     def __init__(self, name=None):
         self.name = name
         self.level = logging.INFO
-        self.fmt = (
-            "[%(levelname)1.1s %(asctime)s.%(msecs)03d %(threadName)s %(message)s"
-        )
+        self.fmt = "[%(levelname)1.1s %(asctime)s.%(msecs)03d %(threadName)s %(custom_id)s] %(message)s"
         self.datefmt = "%y%m%d %H:%M:%S"
         logging.basicConfig(level=self.level, format=self.fmt, datefmt=self.datefmt)
         self.add_handler(logging.getLogger(name), sys.stdout)
@@ -18,7 +27,9 @@ class Logging:
     def add_handler(self, logger, fd):
         handler = logging.StreamHandler(fd)
         handler.setLevel(self.level)
-        handler.setFormatter(logging.Formatter(self.fmt, self.datefmt))
+        handler.setFormatter(
+            MyFormatter(self.fmt, self.datefmt, extra_fields={"custom_id": "ci001"})
+        )
         logger.addHandler(handler)
 
     def del_handler(self, logger, fd):
