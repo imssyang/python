@@ -2,6 +2,15 @@ import logging
 import sys
 
 
+class Counter:
+    def __init__(self):
+        self.seed = 0
+
+    def incr(self):
+        self.seed += 1
+        return self.seed
+
+
 class MyFormatter(logging.Formatter):
     def __init__(self, fmt=None, datefmt=None, extra_fields=None):
         super().__init__(fmt, datefmt)
@@ -9,7 +18,10 @@ class MyFormatter(logging.Formatter):
 
     def format(self, record):
         for field, value in self.extra_fields.items():
-            setattr(record, field, value)
+            if callable(value):
+                setattr(record, field, value())
+            else:
+                setattr(record, field, value)
         return super().format(record)
 
 
@@ -17,7 +29,7 @@ class Logging:
     def __init__(self, name=None):
         self.name = name
         self.level = logging.INFO
-        self.fmt = "[%(levelname)1.1s %(asctime)s.%(msecs)03d %(threadName)s %(custom_id)s] %(message)s"
+        self.fmt = "[%(levelname)1.1s %(asctime)s.%(msecs)03d %(threadName)s %(custom_id)s %(count)s] %(message)s"
         self.datefmt = "%y%m%d %H:%M:%S"
         logging.basicConfig(level=self.level, format=self.fmt, datefmt=self.datefmt)
         self.add_handler(logging.getLogger(name), sys.stdout)
@@ -28,7 +40,11 @@ class Logging:
         handler = logging.StreamHandler(fd)
         handler.setLevel(self.level)
         handler.setFormatter(
-            MyFormatter(self.fmt, self.datefmt, extra_fields={"custom_id": "ci001"})
+            MyFormatter(
+                self.fmt,
+                self.datefmt,
+                extra_fields={"custom_id": "ci001", "count": Counter().incr},
+            )
         )
         logger.addHandler(handler)
 
