@@ -15,6 +15,7 @@ pysocks==1.7.1
 pytest==7.1.2
 python-lsp-server[all]==1.5.0
 shapely==1.8.1
+tldr==3.2.0
 tqdm==4.64.0
 uwsgitop==0.11
 virtualenv==20.14.1
