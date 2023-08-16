@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 import logging
-import aiohttp
-import aiofiles
 import asyncio
 import queue
 import signal
@@ -11,6 +9,8 @@ import time
 import multiprocessing as mp
 import concurrent.futures as cf
 from urllib.parse import urlparse
+import aiofiles
+import aiohttp
 from utils import LOCAL_PATH
 from utils import link_file
 from utils import current_process_info
@@ -58,7 +58,7 @@ class AsyncIO:
             if self.exit_q.full():
                 break
 
-            self.put({"exit": True})
+            self.put({"exit": True}, timeout)
             time.sleep(0.1)
             total += 0.1
 
@@ -68,10 +68,10 @@ class AsyncIO:
             f"stop process pool: {self.pool_size} exit_q_size: {self.exit_q.qsize()} after sleep: {total}"
         )
 
-    def put(self, req):
+    def put(self, req, timeout=None):
         if not req:
             return None
-        self.from_q.put(req)
+        return self.from_q.put(req, True, timeout)
 
     def get(self, timeout=None):
         return self.to_q.get(True, timeout)
@@ -179,7 +179,7 @@ class AsyncIO:
                         logging.info(f"exit when empty")
                         self.exit_q.put({"pid": mp.current_process().pid, "wid": wid})
                         break
-                    elif code != 0:
+                    if code != 0:
                         continue
 
                 tasklist = [item["task"] for item in tasks.values()]
@@ -190,13 +190,13 @@ class AsyncIO:
                     abs(self.queue_size - from_qsize) < 100
                     or abs(self.queue_size - to_qsize) < 100
                 ):
-                    logging.warn(
+                    logging.warning(
                         f"from_qsize: {from_qsize} to_qsize: {to_qsize} "
                         f"tasks: {len(tasklist)} results: {len(results)}"
                     )
 
                 try:
-                    for wid, idx, retry, succ in results:
+                    for wi, idx, retry, succ in results:
                         if succ:
                             del_task(idx)
                         else:
@@ -208,6 +208,7 @@ class AsyncIO:
                     logging.info(f"exception: {e}")
 
         self.loop[wid] = asyncio.new_event_loop()
+        self.loop[wid].set_default_executor(cf.ThreadPoolExecutor(max_workers=5))
         self.loop[wid].run_until_complete(main(wid))
         logging.info(f"exit worker[{wid}]: {current_process_and_thread()}")
 

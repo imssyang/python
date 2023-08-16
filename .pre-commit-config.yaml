@@ -4,7 +4,7 @@
 #
 # Apply to all files without commiting:
 #   pre-commit run --all-files
-exclude: '^(app|archive|bin|data|envs|include|lib|share)/'
+exclude: '^(app|archive|bin|data|envs|include|lib|share|var)/'
 repos:
 - repo: local
   hooks:
