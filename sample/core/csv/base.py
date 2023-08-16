@@ -3,7 +3,7 @@ import os
 
 
 def write(path: str):
-    with open(path, "w", encoding="utf8") as file:
+    with open(path, "w", encoding="utf-8") as file:
         fields = ["algo1", "algo2", "start_time", "end_time"]
         writer = csv.DictWriter(file, fieldnames=fields)
         writer.writeheader()
