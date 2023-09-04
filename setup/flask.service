@@ -8,7 +8,8 @@ Type=simple
 User=root
 Group=root
 WorkingDirectory=/root/.blog/flask
-ExecStart=/opt/python3/bin/uwsgi --ini /root/.blog/flask/conf/uwsgi.ini
+ExecStart=/opt/python3/bin/gunicorn --config /root/.blog/flask/conf/gunicorn.py
+#ExecStart=/opt/python3/bin/uwsgi --ini /root/.blog/flask/conf/uwsgi.ini
 
 [Install]
 WantedBy=multi-user.target
