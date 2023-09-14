@@ -17,5 +17,6 @@ share
 **/*.pyc
 **/*.log
 sample/**/*.pid
+sample/ext/whisper/
 !sample/**/bin
 
