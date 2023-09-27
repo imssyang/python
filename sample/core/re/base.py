@@ -6,7 +6,6 @@ def match(x):
     return f"in:{x.group(1)} pkt_pts:{x.group(2)}123"
 
 
-aa = "version:1 width:1080 height:1920"
 a = "in:5 pkt_pts:1536 cnt:2 8,0,354,1080,1538 1,244,572,386,524"
 p = re.compile(r"in:([0-9]+) pkt_pts:([0-9]+)")
 b = p.sub(lambda x: f"in:{x.group(1)} pkt_pts:{x.group(2)}123", a)

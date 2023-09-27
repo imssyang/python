@@ -6,6 +6,7 @@ package_paths=(
   /usr/local/lib/python3.8/site-packages
   /opt/python3/lib/python3.8/site-packages
   /opt/python3/sample
+  /root/.blog/flask/source
   $PYTHONPATH
 )
 IFS=:$IFS; export PYTHONPATH="${package_paths[*]}"; IFS=${IFS#?}
@@ -39,6 +40,9 @@ export WORKON_HOME=/opt/python3/envs
 if [[ -f /opt/python3/bin/virtualenvwrapper.sh ]]; then
   source /opt/python3/bin/virtualenvwrapper.sh
 fi
+
+# pytest
+export PYTEST_ADDOPTS="-vv --disable-pytest-warnings --durations=0 -s"
 
 # flask
 export FLASK_DEBUG=1
