@@ -4,6 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
+                "/opt/python3/include/python3.8",
                 "/usr/include/python3.7m"
             ],
             "defines": [],
