@@ -8,7 +8,17 @@ def get_vp_m3u8(path, uries):
     for segment in m.segments:
         if segment.uri in uries:
             vp_segments.append(segment)
-            print(segment.uri)
+            print("uri", segment.uri)
+            print("title", segment.title)
+            print("program_date_time", segment.program_date_time)
+            print("discontinuity", segment.discontinuity)
+            print("cue_out_start", segment.cue_out_start)
+            print("duration", segment.duration)
+            print("key", segment.key)
+            print("parts", segment.parts)
+            print("dateranges", segment.dateranges)
+            print("gap_tag", segment.gap_tag)
+            print("custom_parser_values", segment.custom_parser_values)
 
     m.segments = vp_segments
     base, ext = os.path.splitext(path)

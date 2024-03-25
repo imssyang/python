@@ -19,5 +19,6 @@ share
 sample/**/*.pid
 sample/**/*.jpg
 sample/ext/whisper/
+sample/custom/c2p/dlopen/pybind11/
 !sample/**/bin
 
