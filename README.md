@@ -2,6 +2,19 @@
 
 # python3
 
+```bash
+# Install pyenv
+curl https://pyenv.run | bash
+
+# Install python-dependencies on debian
+apt install -y make build-essential libssl-dev zlib1g-dev \
+libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
+libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl
+
+# Install python-dependencies on macos
+brew install openssl readline sqlite3 xz zlib
+```
+
 # 包工具
 
 ```txt
