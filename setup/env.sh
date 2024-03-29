@@ -5,8 +5,18 @@ export PYTHON_DISABLE_ENV=yes
 
 # pyenv
 export PYENV_ROOT=/opt/python/pyenv
-if [[ -f "${HOMEBREW_PREFIX}/bin/pyenv" ]]; then
-  eval "$(pyenv init - zsh)"
+if [[ $(os-name) == "Linux" ]]; then
+  path=(
+    ${PYENV_ROOT}/bin
+    $path
+  )
+  if [[ -f "${PYENV_ROOT}/bin/pyenv" ]]; then
+    eval "$(pyenv init - zsh)"
+  fi
+elif [[ $(os-name) == "Darwin" ]]; then
+  if [[ -f "${HOMEBREW_PREFIX}/bin/pyenv" ]]; then
+    eval "$(pyenv init - zsh)"
+  fi
 fi
 
 #package_paths=(
