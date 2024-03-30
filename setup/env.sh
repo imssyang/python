@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# python
-export PYTHON_DISABLE_ENV=yes
-
 # pyenv
 export PYENV_ROOT=/opt/python/pyenv
 if [[ $OSTYPE == linux* ]]; then
