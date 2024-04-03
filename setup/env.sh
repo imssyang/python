@@ -3,10 +3,6 @@
 # pyenv
 export PYENV_ROOT=/opt/python/pyenv
 if [[ $OSTYPE == linux* ]]; then
-  path=(
-    ${PYENV_ROOT}/bin
-    $path
-  )
   if [[ -f "${PYENV_ROOT}/bin/pyenv" ]]; then
     eval "$(pyenv init - zsh)"
   fi
