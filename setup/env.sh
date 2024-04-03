@@ -2,14 +2,8 @@
 
 # pyenv
 export PYENV_ROOT=/opt/python/pyenv
-if [[ $OSTYPE == linux* ]]; then
-  if [[ -f "${PYENV_ROOT}/bin/pyenv" ]]; then
-    eval "$(pyenv init - zsh)"
-  fi
-elif [[ $OSTYPE == darwin* ]]; then
-  if [[ -f "${HOMEBREW_PREFIX}/bin/pyenv" ]]; then
-    eval "$(pyenv init - zsh)"
-  fi
+if [[ -f "${PYENV_ROOT:-"$HOMEBREW_PREFIX"}/bin/pyenv" ]]; then
+  eval "$(pyenv init - zsh)"
 fi
 
 #package_paths=(
