@@ -246,19 +246,6 @@ https://www.riverbankcomputing.com/
 python -m http.server 8000 --bind 127.0.0.1 --directory /tmp/
 ```
 
-# Jupyterlab
-
-```bash
-$ python -c "from jupyter_server.auth import passwd; print(passwd('XXX'))"
-
-$ vi jupyter_lab_config.py
-c.ServerApp.password = u'argon2:$argon2id$v=19$m=10240,t=10,p=8$nfU35Ct7vbjCiWxPhxLCMg$T1TSPT23ZvKfi7ykHioUSz/rbkvkTVClFWu5F7mZROQ'
-
-$ jupyter lab build --dev-build=False --minimize=False
-$ jupyter labextension uninstall @jupyterlab/celltags-extension
-```
-[Common Directories and File Locations](https://docs.jupyter.org/en/latest/use/jupyter-directories.html)
-
 # uwsgi
 
 ```bash

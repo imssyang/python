@@ -1,3 +1,11 @@
+meson==1.4.0
 opencv-contrib-python==4.5.5.64
+pandas==2.2.1
+pysocks==1.7.1
 pyside6==6.3.0
 scikit-image==0.19.2
+shapely==1.8.1
+tldr==3.2.0
+tqdm==4.64.0
+uwsgitop==0.11
+you-get==0.4.1602
