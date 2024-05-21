@@ -1,5 +1,7 @@
 # Directory in archive file
 archive
+keras/*
+!keras/README.md
 pip/*
 !pip/README.md
 sample/**/*.pid
