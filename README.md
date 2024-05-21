@@ -256,6 +256,13 @@ uwsgi ... --stats :5001
 uwsgitop localhost:5001
 ```
 
+# PyTorch
+
+```bash
+# Linux on cpu
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+```
+
 # 示例
 [Welcome to The Hitchhiker’s Guide to Packaging](https://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html)
 [Awesome Python](https://python.libhunt.com/)
