@@ -261,6 +261,7 @@ uwsgitop localhost:5001
 ```bash
 # Linux on cpu
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+pip install scikit-learn   用于验证模型
 ```
 
 # 示例
