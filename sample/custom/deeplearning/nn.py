@@ -1,35 +1,8 @@
 import numpy as np
+from utils import sigmoid, relu
 
 
-def sigmoid(x):
-    """
-    Compute the sigmoid of x
-
-    Arguments:
-    x -- A scalar or numpy array of any size.
-
-    Return:
-    s -- sigmoid(x)
-    """
-    s = 1/(1+np.exp(-x))
-    return s
-
-
-def relu(x):
-    """
-    Compute the relu of x
-
-    Arguments:
-    x -- A scalar or numpy array of any size.
-
-    Return:
-    s -- relu(x)
-    """
-    s = np.maximum(0,x)
-    return s
-
-
-class OperationNN:
+class BaseOperation:
     @classmethod
     def initialize_parameters(cls, layers_dims, initialization = "he"):
         """
@@ -184,7 +157,7 @@ class OperationNN:
         return loss
 
 
-class SimpleNN(OperationNN):
+class BaseNN:
     @classmethod
     def model(cls, X, Y, learning_rate = 0.01, num_iterations = 15000, print_cost = True, initialization = "he"):
         """
@@ -207,21 +180,21 @@ class SimpleNN(OperationNN):
         layers_dims = [X.shape[0], 10, 5, 1]
 
         # Initialize parameters dictionary.
-        parameters = cls.initialize_parameters(layers_dims, initialization)
+        parameters = BaseOperation.initialize_parameters(layers_dims, initialization)
 
         # Loop (gradient descent)
         for i in range(0, num_iterations):
             # Forward propagation: LINEAR -> RELU -> LINEAR -> RELU -> LINEAR -> SIGMOID.
-            a3, cache = cls.forward_propagation(X, parameters)
+            a3, cache = BaseOperation.forward_propagation(X, parameters)
 
             # Loss
-            cost = cls.compute_loss(a3, Y)
+            cost = BaseOperation.compute_loss(a3, Y)
 
             # Backward propagation.
-            grads = cls.backward_propagation(X, Y, cache)
+            grads = BaseOperation.backward_propagation(X, Y, cache)
 
             # Update parameters.
-            parameters = cls.update_parameters(parameters, grads, learning_rate)
+            parameters = BaseOperation.update_parameters(parameters, grads, learning_rate)
 
             # Print the loss every 1000 iterations
             if print_cost and i % 1000 == 0:
@@ -246,7 +219,7 @@ class SimpleNN(OperationNN):
         p = np.zeros((1,m), dtype = np.int64)
 
         # Forward propagation
-        a3, caches = cls.forward_propagation(X, parameters)
+        a3, caches = BaseOperation.forward_propagation(X, parameters)
 
         # convert probas to 0/1 predictions
         for i in range(0, a3.shape[1]):
@@ -272,6 +245,6 @@ class SimpleNN(OperationNN):
         predictions -- vector of predictions of our model (red: 0 / blue: 1)
         """
         # Predict using forward propagation and a classification threshold of 0.5
-        a3, cache = cls.forward_propagation(X, parameters)
+        a3, cache = BaseOperation.forward_propagation(X, parameters)
         predictions = (a3>0.5)
         return predictions

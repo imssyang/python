@@ -1,34 +1,10 @@
-import pprint
 import unittest
 import numpy as np
 import matplotlib.pyplot as plt
 import sklearn
 import sklearn.datasets
-from simple_nn import OperationNN, SimpleNN
-
-
-def printer(*args, **kwargs):
-    def numpy2str(data):
-        if isinstance(data, dict):
-            for key, value in data.items():
-                if isinstance(value, np.ndarray):
-                    data[key] = value.tolist()
-        return data
-
-    pp = pprint.PrettyPrinter(indent=1, width=80, compact=False)
-    kvargs = dict()
-    for key, value in kwargs.items():
-        kvargs[key] = numpy2str(value)
-    argl = list()
-    for arg in args:
-        argl.append(numpy2str(arg))
-    if len(argl) > 0 and len(kvargs) > 0:
-        argl.append(kvargs)
-        pp.pprint(argl)
-    elif len(argl) > 0:
-        pp.pprint(argl)
-    else:
-        pp.pprint(kvargs)
+from utils import printer
+from nn import BaseOperation, BaseNN
 
 
 class DataSet:
@@ -84,17 +60,17 @@ class DataSet:
         plt.show()
 
 
-class OperationNNTest(unittest.TestCase):
+class BaseOperationTest(unittest.TestCase):
     def test_initialize_parameters(self):
-        parameters = OperationNN.initialize_parameters([3, 2, 1], "zeros")
+        parameters = BaseOperation.initialize_parameters([3, 2, 1], "zeros")
         printer(f"parameters_zeros:", parameters)
-        parameters = OperationNN.initialize_parameters([3, 2, 1], "random")
+        parameters = BaseOperation.initialize_parameters([3, 2, 1], "random")
         printer(f"parameters_random:", parameters)
-        parameters = OperationNN.initialize_parameters([2, 4, 1], "he")
+        parameters = BaseOperation.initialize_parameters([2, 4, 1], "he")
         printer(f"parameters_he:", parameters)
 
 
-class SimpleNNTest(unittest.TestCase):
+class BaseNNTest(unittest.TestCase):
     def setUp(self):
         self.dataset = DataSet()
         self.dataset.show(self.dataset.train_X, self.dataset.train_Y)
@@ -104,18 +80,18 @@ class SimpleNNTest(unittest.TestCase):
         The performance is really bad, and the cost does not really decrease,
         and the algorithm performs no better than random guessing.
         """
-        parameters, costs = SimpleNN.model(
+        parameters, costs = BaseNN.model(
             self.dataset.train_X,
             self.dataset.train_Y,
             initialization = "zeros"
         )
-        predictions_train = SimpleNN.predict(
+        predictions_train = BaseNN.predict(
             self.dataset.train_X,
             self.dataset.train_Y,
             parameters
         )
         printer("predictions_train =", predictions_train)
-        predictions_test = SimpleNN.predict(
+        predictions_test = BaseNN.predict(
             self.dataset.test_X,
             self.dataset.test_Y,
             parameters
@@ -135,7 +111,7 @@ class SimpleNNTest(unittest.TestCase):
             "Model with Zeros initialization",
             self.dataset.train_X,
             self.dataset.train_Y,
-            lambda x: SimpleNN.predict_decision(parameters, x.T),
+            lambda x: BaseNN.predict_decision(parameters, x.T),
         )
 
     def test_parameters_random(self):
@@ -144,10 +120,10 @@ class SimpleNNTest(unittest.TestCase):
         Following random initialization, each neuron can then proceed to learn a different function of its inputs.
         In this exercise, you will see what happens if the weights are intialized randomly, but to very large values.
         """
-        parameters, costs = SimpleNN.model(self.dataset.train_X, self.dataset.train_Y, initialization = "random")
-        predictions_train = SimpleNN.predict(self.dataset.train_X, self.dataset.train_Y, parameters)
+        parameters, costs = BaseNN.model(self.dataset.train_X, self.dataset.train_Y, initialization = "random")
+        predictions_train = BaseNN.predict(self.dataset.train_X, self.dataset.train_Y, parameters)
         printer("predictions_train =", predictions_train)
-        predictions_test = SimpleNN.predict(self.dataset.test_X, self.dataset.test_Y, parameters)
+        predictions_test = BaseNN.predict(self.dataset.test_X, self.dataset.test_Y, parameters)
         printer("predictions_test =", predictions_test)
 
         # Anyway, it looks like you have broken symmetry, and this gives better results.
@@ -168,7 +144,7 @@ class SimpleNNTest(unittest.TestCase):
             "Model with large random initialization",
             self.dataset.train_X,
             self.dataset.train_Y,
-            lambda x: SimpleNN.predict_decision(parameters, x.T),
+            lambda x: BaseNN.predict_decision(parameters, x.T),
         )
 
     def test_parameters_he(self):
@@ -178,10 +154,10 @@ class SimpleNNTest(unittest.TestCase):
         a scaling factor for the weights 𝑊[𝑙] of sqrt(1./layers_dims[l-1]) where He initialization would
         use sqrt(2./layers_dims[l-1]).)
         """
-        parameters, costs = SimpleNN.model(self.dataset.train_X, self.dataset.train_Y, initialization = "he")
-        predictions_train = SimpleNN.predict(self.dataset.train_X, self.dataset.train_Y, parameters)
+        parameters, costs = BaseNN.model(self.dataset.train_X, self.dataset.train_Y, initialization = "he")
+        predictions_train = BaseNN.predict(self.dataset.train_X, self.dataset.train_Y, parameters)
         printer("predictions_train =", predictions_train)
-        predictions_test = SimpleNN.predict(self.dataset.test_X, self.dataset.test_Y, parameters)
+        predictions_test = BaseNN.predict(self.dataset.test_X, self.dataset.test_Y, parameters)
         printer("predictions_test =", predictions_test)
 
         self.dataset.show_loss(costs, learning_rate = 0.01)
@@ -191,5 +167,5 @@ class SimpleNNTest(unittest.TestCase):
             "Model with He initialization",
             self.dataset.train_X,
             self.dataset.train_Y,
-            lambda x: SimpleNN.predict_decision(parameters, x.T),
+            lambda x: BaseNN.predict_decision(parameters, x.T),
         )
