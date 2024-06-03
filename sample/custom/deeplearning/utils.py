@@ -31,11 +31,22 @@ def relu(x):
 
 
 def printer(*args, **kwargs):
+    def convert(value):
+        if isinstance(value, np.ndarray):
+            return value.tolist()
+        return value
+
     def numpy2str(data):
         if isinstance(data, dict):
             for key, value in data.items():
-                if isinstance(value, np.ndarray):
-                    data[key] = value.tolist()
+                data[key] = convert(value)
+        if isinstance(data, list):
+            data_tmp = []
+            for value in data:
+                data_tmp.append(convert(value))
+            data = data_tmp
+        else:
+            data = convert(data)
         return data
 
     pp = pprint.PrettyPrinter(indent=1, width=80, compact=False)
