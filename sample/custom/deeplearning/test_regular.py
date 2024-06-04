@@ -1,59 +1,8 @@
 import unittest
 import numpy as np
-import matplotlib.pyplot as plt
-import scipy.io
 from utils import printer
+from datasets import FootballDataSet as DataSet
 from nn_regular import L2Operation, DropoutOperation, RegularNN
-
-
-class DataSet:
-    def __init__(self):
-        self.train_X, self.train_Y, self.test_X, self.test_Y = self.load()
-
-    def load(self):
-        data = scipy.io.loadmat('datasets/data.mat')
-        train_X = data['X'].T
-        train_Y = data['y'].T
-        test_X = data['Xval'].T
-        test_Y = data['yval'].T
-        return train_X, train_Y, test_X, test_Y
-
-    def show(self, X, Y):
-        print(f"X = {X}")
-        print(f"Y = {Y}")
-        plt.rcParams['figure.figsize'] = (7.0, 4.0) # set default size of plots
-        plt.rcParams['image.interpolation'] = 'nearest'
-        plt.rcParams['image.cmap'] = 'gray'
-        plt.scatter(X[0], X[1], c=Y, s=40, cmap=plt.cm.Spectral);
-        plt.show()
-
-    def show_loss(self, costs, learning_rate):
-        plt.plot(costs)
-        plt.ylabel('cost')
-        plt.xlabel('iterations (x1,000)')
-        plt.title("Learning rate =" + str(learning_rate))
-        plt.show()
-
-    def show_boundary(self, title, X, Y, model):
-        # Set min and max values and give it some padding
-        x_min, x_max = X[0, :].min() - 1, X[0, :].max() + 1
-        y_min, y_max = X[1, :].min() - 1, X[1, :].max() + 1
-        h = 0.01
-        # Generate a grid of points with distance h between them
-        xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
-        # Predict the function value for the whole grid
-        Z = model(np.c_[xx.ravel(), yy.ravel()])
-        Z = Z.reshape(xx.shape)
-        plt.title(title)
-        axes = plt.gca()
-        axes.set_xlim([-0.75,0.40])
-        axes.set_ylim([-0.75,0.65])
-        # Plot the contour and training examples
-        plt.contourf(xx, yy, Z, cmap=plt.cm.Spectral)
-        plt.ylabel('x2')
-        plt.xlabel('x1')
-        plt.scatter(X[0, :], X[1, :], c=Y, cmap=plt.cm.Spectral)
-        plt.show()
 
 
 class L2OperationTest(unittest.TestCase):
@@ -160,36 +109,32 @@ class DropoutOperationTest(unittest.TestCase):
 
 class RegularNNTest(unittest.TestCase):
     def setUp(self):
-        self.dataset = DataSet()
-        self.dataset.show(self.dataset.train_X, self.dataset.train_Y)
+        self.train_X, self.train_Y, self.test_X, self.test_Y = DataSet.load()
+        self.learning_rate = 0.3
+        self.loss_xlable = 'iterations (x1,000)'
+        self.axe_xlim = [-0.75,0.40]
+        self.axe_ylim = [-0.75,0.65]
+        DataSet.show_data(self.train_X, self.train_Y)
 
     def test_without_regularization(self):
-        parameters, costs = RegularNN.model(
-            self.dataset.train_X,
-            self.dataset.train_Y,
-        )
-        predictions_train = RegularNN.predict(
-            self.dataset.train_X,
-            self.dataset.train_Y,
-            parameters
-        )
+        parameters, costs = RegularNN.model(self.train_X, self.train_Y)
+        predictions_train = RegularNN.predict(self.train_X, self.train_Y, parameters)
         printer("predictions_train =", predictions_train)
-        predictions_test = RegularNN.predict(
-            self.dataset.test_X,
-            self.dataset.test_Y,
-            parameters
-        )
+        predictions_test = RegularNN.predict(self.test_X, self.test_Y, parameters)
         printer("predictions_test =", predictions_test)
 
-        self.dataset.show_loss(costs, learning_rate = 0.3)
+        DataSet.show_loss(costs, self.learning_rate, self.loss_xlable)
 
         # The non-regularized model is obviously overfitting the training set.
         # It is fitting the noisy points!.
-        self.dataset.show_boundary(
+        DataSet.show_boundary(
             "Model without regularization",
-            self.dataset.train_X,
-            self.dataset.train_Y.ravel(),
-            lambda x: RegularNN.predict_decision(parameters, x.T),
+            self.train_X,
+            self.train_Y.ravel(),
+            parameters,
+            RegularNN.predict_decision,
+            self.axe_xlim,
+            self.axe_ylim,
         )
 
     def test_l2_regularization(self):
@@ -199,32 +144,23 @@ class RegularNNTest(unittest.TestCase):
         L2-regularization relies on the assumption that a model with small weights
         is simpler than a model with large weights.
         """
-        parameters, costs = RegularNN.model(
-            self.dataset.train_X,
-            self.dataset.train_Y,
-            lambd = 0.7,
-        )
-        predictions_train = RegularNN.predict(
-            self.dataset.train_X,
-            self.dataset.train_Y,
-            parameters,
-        )
+        parameters, costs = RegularNN.model(self.train_X, self.train_Y, lambd = 0.7)
+        predictions_train = RegularNN.predict(self.train_X, self.train_Y, parameters)
         printer("predictions_train =", predictions_train)
-        predictions_test = RegularNN.predict(
-            self.dataset.test_X,
-            self.dataset.test_Y,
-            parameters
-        )
+        predictions_test = RegularNN.predict(self.test_X, self.test_Y, parameters)
         printer("predictions_test =", predictions_test)
 
-        self.dataset.show_loss(costs, learning_rate = 0.3)
+        DataSet.show_loss(costs, self.learning_rate, self.loss_xlable)
 
         # You are not overfitting the training data anymore.
-        self.dataset.show_boundary(
+        DataSet.show_boundary(
             "Model with L2-regularization",
-            self.dataset.train_X,
-            self.dataset.train_Y.ravel(),
-            lambda x: RegularNN.predict_decision(parameters, x.T),
+            self.train_X,
+            self.train_Y.ravel(),
+            parameters,
+            RegularNN.predict_decision,
+            self.axe_xlim,
+            self.axe_ylim,
         )
 
     def test_dropout_regularization(self):
@@ -235,31 +171,34 @@ class RegularNNTest(unittest.TestCase):
           You should use dropout (randomly eliminate nodes) only in training.
         """
         parameters, costs = RegularNN.model(
-            self.dataset.train_X,
-            self.dataset.train_Y,
+            self.train_X,
+            self.train_Y,
             keep_prob = 0.86,
             learning_rate = 0.3,
         )
         predictions_train = RegularNN.predict(
-            self.dataset.train_X,
-            self.dataset.train_Y,
+            self.train_X,
+            self.train_Y,
             parameters,
         )
         printer("predictions_train =", predictions_train)
         predictions_test = RegularNN.predict(
-            self.dataset.test_X,
-            self.dataset.test_Y,
+            self.test_X,
+            self.test_Y,
             parameters
         )
         printer("predictions_test =", predictions_test)
 
         # The test accuracy has increased again (to 95%)! Your model is not overfitting the training set
         # and does a great job on the test set.
-        self.dataset.show_loss(costs, learning_rate = 0.3)
+        DataSet.show_loss(costs, self.learning_rate, self.loss_xlable)
 
-        self.dataset.show_boundary(
+        DataSet.show_boundary(
             "Model with L2-regularization",
-            self.dataset.train_X,
-            self.dataset.train_Y.ravel(),
-            lambda x: RegularNN.predict_decision(parameters, x.T),
+            self.train_X,
+            self.train_Y.ravel(),
+            parameters,
+            RegularNN.predict_decision,
+            self.axe_xlim,
+            self.axe_ylim,
         )

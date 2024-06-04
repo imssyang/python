@@ -1,9 +1,7 @@
 import unittest
 import numpy as np
-import matplotlib.pyplot as plt
-import sklearn
-import sklearn.datasets
 from utils import printer
+from datasets import MoonDataSet as DataSet
 from nn import BaseOperation
 from nn_optimize import (
     MiniBatchOperation,
@@ -181,109 +179,68 @@ class AdamOperationTest(unittest.TestCase):
         printer("s[\"db2\"] =", s["db2"])
 
 
-class DataSet:
-    def __init__(self):
-        self.train_X, self.train_Y = self.load()
-
-    def load(self):
-        np.random.seed(3)
-        train_X, train_Y = sklearn.datasets.make_moons(n_samples=300, noise=.2) #300 #0.2
-        # Visualize the data
-        plt.scatter(train_X[:, 0], train_X[:, 1], c=train_Y, s=40, cmap=plt.cm.Spectral);
-        train_X = train_X.T
-        train_Y = train_Y.reshape((1, train_Y.shape[0]))
-        return train_X, train_Y
-
-    def show(self, X, Y):
-        print(f"X = {X}")
-        print(f"Y = {Y}")
-        plt.rcParams['figure.figsize'] = (7.0, 4.0) # set default size of plots
-        plt.rcParams['image.interpolation'] = 'nearest'
-        plt.rcParams['image.cmap'] = 'gray'
-        plt.scatter(X[0], X[1], c=Y, s=40, cmap=plt.cm.Spectral);
-        plt.show()
-
-    def show_loss(self, costs, learning_rate):
-        plt.plot(costs)
-        plt.ylabel('cost')
-        plt.xlabel('epochs (per 100)')
-        plt.title("Learning rate =" + str(learning_rate))
-        plt.show()
-
-    def show_boundary(self, title, X, Y, model):
-        # Set min and max values and give it some padding
-        x_min, x_max = X[0, :].min() - 1, X[0, :].max() + 1
-        y_min, y_max = X[1, :].min() - 1, X[1, :].max() + 1
-        h = 0.01
-        # Generate a grid of points with distance h between them
-        xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
-        # Predict the function value for the whole grid
-        Z = model(np.c_[xx.ravel(), yy.ravel()])
-        Z = Z.reshape(xx.shape)
-        plt.title(title)
-        axes = plt.gca()
-        axes.set_xlim([-1.5,2.5])
-        axes.set_ylim([-1,1.5])
-        # Plot the contour and training examples
-        plt.contourf(xx, yy, Z, cmap=plt.cm.Spectral)
-        plt.ylabel('x2')
-        plt.xlabel('x1')
-        plt.scatter(X[0, :], X[1, :], c=Y, cmap=plt.cm.Spectral)
-        plt.show()
-
-
 class OptimizeNNTest(unittest.TestCase):
     def setUp(self):
-        self.dataset = DataSet()
-        self.dataset.show(self.dataset.train_X, self.dataset.train_Y)
+        self.train_X, self.train_Y = DataSet.load()
+        self.learning_rate = 0.0007
+        DataSet.show_data(self.train_X, self.train_Y)
 
     def test_minibatch_gradient_descent(self):
-        train_X, train_Y = self.dataset.train_X, self.dataset.train_Y
-
-        # train 3-layer model
-        layers_dims = [train_X.shape[0], 5, 2, 1]
+        train_X, train_Y = self.train_X, self.train_Y
+        layers_dims = [train_X.shape[0], 5, 2, 1]  # train 3-layer model
         parameters, costs = OptimizeNN.model(train_X, train_Y, layers_dims, optimizer = "gd")
         predictions = OptimizeNN.predict(train_X, train_Y, parameters)
         printer("predictions_train =", predictions)
 
-        self.dataset.show_loss(costs, learning_rate = 0.0007)
-        self.dataset.show_boundary(
+        DataSet.show_loss(
+            costs,
+            self.learning_rate,
+            'epochs (per 100)',
+        )
+        DataSet.show_boundary(
             "Model with Gradient Descent optimization",
             train_X,
             train_Y.ravel(),
-            lambda x: OptimizeNN.predict_decision(parameters, x.T),
+            parameters,
+            OptimizeNN.predict_decision,
         )
 
     def test_minibatch_gradient_descent_with_momentum(self):
-        train_X, train_Y = self.dataset.train_X, self.dataset.train_Y
-
-        # train 3-layer model
+        train_X, train_Y = self.train_X, self.train_Y
         layers_dims = [train_X.shape[0], 5, 2, 1]
         parameters, costs = OptimizeNN.model(train_X, train_Y, layers_dims, beta = 0.9, optimizer = "momentum")
         predictions = OptimizeNN.predict(train_X, train_Y, parameters)
         printer("predictions_train =", predictions)
 
-        self.dataset.show_loss(costs, learning_rate = 0.0007)
-        self.dataset.show_boundary(
-            "Model with Gradient Descent optimization",
+        DataSet.show_loss(
+            costs,
+            self.learning_rate,
+            'epochs (per 100)',
+        )
+        DataSet.show_boundary(
+            "Model with Momentum Gradient Descent optimization",
             train_X,
             train_Y.ravel(),
-            lambda x: OptimizeNN.predict_decision(parameters, x.T),
+            parameters,
+            OptimizeNN.predict_decision,
         )
 
     def test_minibatch_gradient_descent_with_adam(self):
-        train_X, train_Y = self.dataset.train_X, self.dataset.train_Y
-
-        # train 3-layer model
+        train_X, train_Y = self.train_X, self.train_Y
         layers_dims = [train_X.shape[0], 5, 2, 1]
         parameters, costs = OptimizeNN.model(train_X, train_Y, layers_dims, optimizer = "adam")
         predictions = OptimizeNN.predict(train_X, train_Y, parameters)
         printer("predictions_train =", predictions)
 
-        self.dataset.show_loss(costs, learning_rate = 0.0007)
-        self.dataset.show_boundary(
-            "Model with Gradient Descent optimization",
+        DataSet.show_loss(
+            costs,
+            self.learning_rate,
+            'epochs (per 100)',
+        )
+        DataSet.show_boundary(
+            "Model with Adam Gradient Descent optimization",
             train_X,
             train_Y.ravel(),
-            lambda x: OptimizeNN.predict_decision(parameters, x.T),
+            parameters,
+            OptimizeNN.predict_decision,
         )
