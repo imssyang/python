@@ -1,8 +1,11 @@
+import h5py
 import numpy as np
 import matplotlib.pyplot as plt
+import imageio
 import scipy.io
 import sklearn
 import sklearn.datasets
+from PIL import Image
 
 
 class BaseDataSet:
@@ -99,3 +102,41 @@ class MoonDataSet(BaseDataSet):
         train_Y = train_Y.reshape((1, train_Y.shape[0]))
         return train_X, train_Y
 
+
+class SignDataSet(BaseDataSet):
+    @classmethod
+    def load(cls):
+        # Training set: 1080 pictures (64 by 64 pixels) of signs representing numbers from 0 to 5 (180 pictures per number).
+        train_dataset = h5py.File('datasets/sign_trains.h5', "r")
+        train_set_x_orig = np.array(train_dataset["train_set_x"][:]) # your train set features
+        train_set_y_orig = np.array(train_dataset["train_set_y"][:]) # your train set labels
+
+        # Test set: 120 pictures (64 by 64 pixels) of signs representing numbers from 0 to 5 (20 pictures per number).
+        test_dataset = h5py.File('datasets/sign_tests.h5', "r")
+        test_set_x_orig = np.array(test_dataset["test_set_x"][:]) # your test set features
+        test_set_y_orig = np.array(test_dataset["test_set_y"][:]) # your test set labels
+
+        classes = np.array(test_dataset["list_classes"][:]) # the list of classes
+        train_set_y_orig = train_set_y_orig.reshape((1, train_set_y_orig.shape[0]))
+        test_set_y_orig = test_set_y_orig.reshape((1, test_set_y_orig.shape[0]))
+        return train_set_x_orig, train_set_y_orig, test_set_x_orig, test_set_y_orig, classes
+
+    @classmethod
+    def load_thumb_image(cls):
+        image_path = "datasets/sign_thumb.jpg"
+        image = np.array(imageio.imread(image_path))
+        image64 = np.array(
+            Image.fromarray(image).resize(size=(64,64)),
+        ).reshape((1, 64*64*3)).T
+        return image, image64
+
+    @classmethod
+    def show_sign(cls, X, Y, index):
+        print("y = " + str(np.squeeze(Y[:, index])))
+        plt.imshow(X[index])
+        plt.show()
+
+    @classmethod
+    def show_image(cls, image):
+        plt.imshow(image)
+        plt.show()
