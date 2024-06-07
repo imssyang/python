@@ -2,7 +2,7 @@ import unittest
 import numpy as np
 import matplotlib.pyplot as plt
 from utils import printer
-from nn_check import LinearCheck, BaseNNCheck
+from nn3_check import LinearCheck, BaseNNCheck
 
 
 class LinearCheckTest(unittest.TestCase):

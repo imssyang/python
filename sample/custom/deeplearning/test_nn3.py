@@ -2,7 +2,7 @@ import unittest
 import numpy as np
 from utils import printer
 from datasets import CircleDataSet as DataSet
-from nn import BaseOperation, BaseNN
+from nn3 import BaseOperation, BaseNN
 
 
 class BaseOperationTest(unittest.TestCase):

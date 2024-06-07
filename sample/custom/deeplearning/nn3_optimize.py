@@ -1,7 +1,7 @@
 import math
 import numpy as np
 from utils import sigmoid, relu
-from nn import BaseOperation, BaseNN
+from nn3 import BaseOperation, BaseNN
 
 
 class MiniBatchOperation(BaseOperation):

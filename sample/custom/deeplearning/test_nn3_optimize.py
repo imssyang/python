@@ -2,8 +2,8 @@ import unittest
 import numpy as np
 from utils import printer
 from datasets import MoonDataSet as DataSet
-from nn import BaseOperation
-from nn_optimize import (
+from nn3 import BaseOperation
+from nn3_optimize import (
     MiniBatchOperation,
     MomentumOperation,
     AdamOperation,

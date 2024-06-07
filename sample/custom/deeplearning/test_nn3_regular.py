@@ -2,7 +2,7 @@ import unittest
 import numpy as np
 from utils import printer
 from datasets import FootballDataSet as DataSet
-from nn_regular import L2Operation, DropoutOperation, RegularNN
+from nn3_regular import L2Operation, DropoutOperation, RegularNN
 
 
 class L2OperationTest(unittest.TestCase):

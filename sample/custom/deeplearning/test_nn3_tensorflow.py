@@ -3,7 +3,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow.compat.v1 as tf_v1
 from datasets import SignDataSet as DataSet
-from nn_tensorflow import TensorflowOperation, TensorflowNN
+from nn3_tensorflow import TensorflowOperation, TensorflowNN
 
 
 class TensorflowTest(unittest.TestCase):
