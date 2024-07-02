@@ -1,8 +1,9 @@
 # pylint: disable=consider-using-f-string
 
 """
-python thingy.py -a 123 -b abc
+python thingy.py -a 123 -b abc -c '{"a": 1}'
 """
+import json
 import sys
 import argparse
 from core.logging.logger import logger
@@ -14,11 +15,12 @@ def parse_args_f():
     parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.1")
     parser.add_argument("-a", "--arg1", required=True, help="this is for arg1")
     parser.add_argument("-b", "--arg2", required=True, help="this is for arg2")
+    parser.add_argument("-c", "--arg3", required=True, type=json.loads, help="this is for arg2")
     return parser.parse_args()
 
 
-parser_f = parse_args_f()
-logger.info(f"parser_f: {parser_f}")
+args = parse_args_f()
+logger.info(f"parser: {args} {type(args.arg3)}:{args.arg3} {args.arg3['a']}")
 
 
 class Thingy:
@@ -29,6 +31,7 @@ class Thingy:
         parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.1")
         parser.add_argument("-a", "--arg1", required=True, help="this is for arg1")
         parser.add_argument("-b", "--arg2", required=True, help="this is for arg2")
+        parser.add_argument("-c", "--arg3", required=True, help="this is for arg2")
         return parser.parse_args(args)
 
 
