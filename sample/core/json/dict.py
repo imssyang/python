@@ -2,7 +2,7 @@ import json
 
 
 def dict_to_json():
-    dict = {
+    d = {
         "realname": "trans-live_392836434_52698792-2022-11-01-18:47:06",
         "object": {
             "url": "http://uposgate-vip.bilivideo.com:2281/livechunks/trans-live_392836434_52698792-2022-11-01-18:47:06.flv",
@@ -52,16 +52,21 @@ def dict_to_json():
         "callback": "http://10.69.74.12/t_callback",
         "role": "fastrec",
     }
-    j = json.dumps(dict, indent=4)
+    j = json.dumps(d, indent=4)
     print(j)
+    k = json.dumps(j)
+    print(k)
+    k = json.dumps(k)
+    print(k)
+    o = json.loads(k)
+    print(o)
+
 
 
 def json_to_dict():
     j = '{"id": "007", "name": "007", "age": 28, "sex": "male", "phone": "13000000000", "email": "123@qq.com"}'
-    dict = json.loads(s=j)
-    print(
-        dict
-    )  # {'id': '007', 'name': '007', 'age': 28, 'sex': 'male', 'phone': '13000000000', 'email': '123@qq.com'}
+    d = json.loads(s=j)
+    print(d)  # {'id': '007', 'name': '007', 'age': 28, 'sex': 'male', 'phone': '13000000000', 'email': '123@qq.com'}
 
 
 if __name__ == "__main__":
