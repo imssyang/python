@@ -244,16 +244,44 @@ class SignDataSet(BaseDataSet):
         return train_set_x_orig, train_set_y_orig, test_set_x_orig, test_set_y_orig, classes
 
     @classmethod
-    def load_thumb_image(cls):
+    def load_thumb_image(cls, flatten):
         image_path = "datasets/sign_thumb.jpg"
         image = np.array(imageio.imread(image_path))
-        image64 = np.array(
-            Image.fromarray(image).resize(size=(64,64)),
-        ).reshape((1, 64*64*3)).T
+        if flatten:
+            image64 = np.array(
+                Image.fromarray(image).resize(size=(64,64)),
+            ).reshape((1, 64*64*3)).T
+        else:
+            image64 = np.array(
+                Image.fromarray(image).resize(size=(64,64)),
+            ).reshape((1, 64, 64, 3))
         return image, image64
 
     @classmethod
     def show_sign(cls, X, Y, index):
+        print("y = " + str(np.squeeze(Y[:, index])))
+        plt.imshow(X[index])
+        plt.show()
+
+
+class HappyDataSet(BaseDataSet):
+    @classmethod
+    def load(cls):
+        train_data = h5py.File('datasets/happy_trains.h5', "r")
+        x_train = np.array(train_data["train_set_x"][:])
+        y_train = np.array(train_data["train_set_y"][:])
+
+        test_data = h5py.File('datasets/happy_tests.h5', "r")
+        x_test = np.array(test_data["test_set_x"][:])
+        y_test = np.array(test_data["test_set_y"][:])
+
+        classes = np.array(test_data["list_classes"][:])
+        y_train = y_train.reshape((1, y_train.shape[0]))
+        y_test = y_test.reshape((1, y_test.shape[0]))
+        return x_train, y_train, x_test, y_test, classes
+
+    @classmethod
+    def show_face(cls, X, Y, index):
         print("y = " + str(np.squeeze(Y[:, index])))
         plt.imshow(X[index])
         plt.show()

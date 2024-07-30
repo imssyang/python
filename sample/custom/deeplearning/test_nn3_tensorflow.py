@@ -233,7 +233,7 @@ class TensorflowNNTest(unittest.TestCase):
         parameters, costs = TensorflowNN.model(self.X_train, self.Y_train, self.X_test, self.Y_test)
         DataSet.show_loss(costs, self.learning_rate, self.loss_xlable)
 
-        image, image64 = DataSet.load_thumb_image()
+        image, image64 = DataSet.load_thumb_image(flatten=True)
         image_prediction = TensorflowNN.predict(image64, parameters)
         print("Model predicts: y = " + str(np.squeeze(image_prediction)))
         DataSet.show_image(image)

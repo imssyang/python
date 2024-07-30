@@ -58,7 +58,7 @@ class TensorflowCNNTest(unittest.TestCase):
         self.X_train_orig, self.Y_train_orig, self.X_test_orig, self.Y_test_orig, self.classes = DataSet.load()
         DataSet.show_sign(self.X_train_orig, self.Y_train_orig, 6)
 
-        self.X_train, self.Y_train, self.X_test, self.Y_test = self.flatten_image_dataset(
+        self.X_train, self.Y_train, self.X_test, self.Y_test = self.scalling_dataset(
             self.X_train_orig, self.Y_train_orig,
             self.X_test_orig, self.Y_test_orig
         )
@@ -69,7 +69,7 @@ class TensorflowCNNTest(unittest.TestCase):
         Y = np.eye(C)[Y.reshape(-1)].T
         return Y
 
-    def flatten_image_dataset(self, X_train_orig, Y_train_orig, X_test_orig, Y_test_orig):
+    def scalling_dataset(self, X_train_orig, Y_train_orig, X_test_orig, Y_test_orig):
         # Normalize image vectors
         X_train = X_train_orig / 255.
         X_test = X_test_orig / 255.
@@ -82,13 +82,14 @@ class TensorflowCNNTest(unittest.TestCase):
         print("Y_train shape: " + str(Y_train.shape))
         print("X_test shape: " + str(X_test.shape))
         print("Y_test shape: " + str(Y_test.shape))
+        print("data classes: ", self.classes)
         return X_train, Y_train, X_test, Y_test
 
     def test_model(self):
-        parameters, costs = TensorflowCNN.model(self.X_train, self.Y_train, self.X_test, self.Y_test, num_epochs = 3)
+        parameters, costs = TensorflowCNN.model(self.X_train, self.Y_train, self.X_test, self.Y_test)
         DataSet.show_loss(costs, self.learning_rate, self.loss_xlable)
 
-        image, image64 = DataSet.load_thumb_image()
+        image, image64 = DataSet.load_thumb_image(flatten=False)
         image_prediction = TensorflowCNN.predict(image64, parameters)
         print("Model predicts: y = " + str(np.squeeze(image_prediction)))
         DataSet.show_image(image)
