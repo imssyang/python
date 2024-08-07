@@ -9,6 +9,7 @@ sample/**/*.jpg
 sample/ext/whisper/
 sample/custom/c2p/dlopen/pybind11/
 !sample/**/bin
+!sample/custom/deeplearning/**/*.jpg
 **/__pycache__
 **/*.egg-info
 **/*.pyc
