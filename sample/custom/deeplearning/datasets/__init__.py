@@ -245,8 +245,15 @@ class SignDataSet(BaseDataSet):
 
     @classmethod
     def load_thumb_image(cls, flatten):
-        image_path = "datasets/sign_thumb.jpg"
-        image = np.array(imageio.imread(image_path))
+        return cls.load_image('datasets/sign_thumb.jpg', flatten)
+
+    @classmethod
+    def load_two_image(cls, flatten):
+        return cls.load_image('datasets/sign_two.jpg', flatten)
+
+    @classmethod
+    def load_image(cls, path, flatten):
+        image = np.array(imageio.imread(path))
         if flatten:
             image64 = np.array(
                 Image.fromarray(image).resize(size=(64,64)),

@@ -1,39 +1,8 @@
 import unittest
 import numpy as np
-import tensorflow as tf
-import tensorflow.compat.v1 as tf_v1
-import keras.backend as K
 from utils import printer
 from datasets import SignDataSet as DataSet
-from cnn_resnet import ResnetBlock, ResnetModel
-
-
-def setUpModule():
-    tf_v1.disable_v2_behavior()
-
-
-class ResnetBlockTest(unittest.TestCase):
-    def test_identity(self):
-        tf_v1.reset_default_graph()
-        with tf_v1.Session() as session:
-            np.random.seed(1)
-            A_prev = tf_v1.placeholder("float", [3, 4, 4, 6])
-            X = np.random.randn(3, 4, 4, 6)
-            A = ResnetBlock.identity(A_prev, f = 2, filters = [2, 4, 6], stage = 1, block = 'a')
-            session.run(tf_v1.global_variables_initializer())
-            out = session.run([A], feed_dict={A_prev: X})
-            printer("out = ", out[0][1][1][0])
-
-    def test_convolutional(self):
-        tf_v1.reset_default_graph()
-        with tf_v1.Session() as session:
-            np.random.seed(1)
-            A_prev = tf_v1.placeholder("float", [3, 4, 4, 6])
-            X = np.random.randn(3, 4, 4, 6)
-            A = ResnetBlock.convolutional(A_prev, f = 2, filters = [2, 4, 6], stage = 1, block = 'a')
-            session.run(tf_v1.global_variables_initializer())
-            out = session.run([A], feed_dict={A_prev: X})
-            printer("out = ", out[0][1][1][0])
+from cnn_resnet import ResnetModel
 
 
 class ResnetModelTest(unittest.TestCase):
@@ -70,3 +39,8 @@ class ResnetModelTest(unittest.TestCase):
         model = ResnetModel.model(self.X_train, self.Y_train, self.X_test, self.Y_test)
         ResnetModel.summary(model)
         ResnetModel.plot(model, 'datasets/resnet50.png')
+
+        image, image64 = DataSet.load_two_image(flatten=False)
+        image_prediction = ResnetModel.predict(image64, model)
+        print("Model predicts: y = " + str(np.squeeze(image_prediction)))
+        DataSet.show_image(image)

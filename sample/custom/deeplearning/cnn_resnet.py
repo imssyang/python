@@ -1,12 +1,11 @@
-import tensorflow.compat.v1 as tf_v1
+import tensorflow as tf
 from keras.layers import Input, Add, Dense, Activation, ZeroPadding2D, BatchNormalization, Flatten, Conv2D
 from keras.layers import AveragePooling2D, MaxPooling2D, GlobalMaxPooling2D
 from keras.models import Model
 from keras.utils import plot_model
 import keras.backend as K
 
-tf_v1.disable_v2_behavior()
-tf_v1.disable_eager_execution()
+
 K.set_image_data_format('channels_last')
 
 
@@ -38,17 +37,17 @@ class ResnetBlock:
         X_shortcut = X
 
         # First component of main path
-        X = Conv2D(filters = F1, kernel_size = (1, 1), strides = (1,1), padding = 'valid', name = conv_name_base + '2a', kernel_initializer = tf_v1.initializers.glorot_uniform(seed=0))(X)
+        X = Conv2D(filters = F1, kernel_size = (1, 1), strides = (1,1), padding = 'valid', name = conv_name_base + '2a', kernel_initializer = tf.keras.initializers.GlorotUniform(seed=0))(X)
         X = BatchNormalization(axis = 3, name = bn_name_base + '2a')(X)
         X = Activation('relu')(X)
 
         # Second component of main path (≈3 lines)
-        X = Conv2D(filters = F2, kernel_size = (f, f), strides = (1,1), padding = 'same', name = conv_name_base + '2b', kernel_initializer = tf_v1.initializers.glorot_uniform(seed=0))(X)
+        X = Conv2D(filters = F2, kernel_size = (f, f), strides = (1,1), padding = 'same', name = conv_name_base + '2b', kernel_initializer = tf.keras.initializers.GlorotUniform(seed=0))(X)
         X = BatchNormalization(axis = 3, name = bn_name_base + '2b')(X)
         X = Activation('relu')(X)
 
         # Third component of main path (≈2 lines)
-        X = Conv2D(filters = F3, kernel_size = (1, 1), strides = (1,1), padding = 'valid', name = conv_name_base + '2c', kernel_initializer = tf_v1.initializers.glorot_uniform(seed=0))(X)
+        X = Conv2D(filters = F3, kernel_size = (1, 1), strides = (1,1), padding = 'valid', name = conv_name_base + '2c', kernel_initializer = tf.keras.initializers.GlorotUniform(seed=0))(X)
         X = BatchNormalization(axis = 3, name = bn_name_base + '2c')(X)
 
         # Final step: Add shortcut value to main path, and pass it through a RELU activation (≈2 lines)
@@ -84,21 +83,21 @@ class ResnetBlock:
 
         ##### MAIN PATH #####
         # First component of main path
-        X = Conv2D(F1, (1, 1), strides = (s,s), name = conv_name_base + '2a', kernel_initializer = tf_v1.initializers.glorot_uniform(seed=0))(X)
+        X = Conv2D(F1, (1, 1), strides = (s,s), name = conv_name_base + '2a', kernel_initializer = tf.keras.initializers.GlorotUniform(seed=0))(X)
         X = BatchNormalization(axis = 3, name = bn_name_base + '2a')(X)
         X = Activation('relu')(X)
 
         # Second component of main path (≈3 lines)
-        X = Conv2D(F2, (f, f), strides = (1,1), padding='same', name = conv_name_base + '2b', kernel_initializer = tf_v1.initializers.glorot_uniform(seed=0))(X)
+        X = Conv2D(F2, (f, f), strides = (1,1), padding='same', name = conv_name_base + '2b', kernel_initializer = tf.keras.initializers.GlorotUniform(seed=0))(X)
         X = BatchNormalization(axis = 3, name = bn_name_base + '2b')(X)
         X = Activation('relu')(X)
 
         # Third component of main path (≈2 lines)
-        X = Conv2D(F3, (1, 1), strides = (1,1), name = conv_name_base + '2c', kernel_initializer = tf_v1.initializers.glorot_uniform(seed=0))(X)
+        X = Conv2D(F3, (1, 1), strides = (1,1), name = conv_name_base + '2c', kernel_initializer = tf.keras.initializers.GlorotUniform(seed=0))(X)
         X = BatchNormalization(axis = 3, name = bn_name_base + '2c')(X)
 
         ##### SHORTCUT PATH #### (≈2 lines)
-        X_shortcut = Conv2D(F3, (1, 1), strides = (s,s), name = conv_name_base + '1', kernel_initializer = tf_v1.initializers.glorot_uniform(seed=0))(X_shortcut)
+        X_shortcut = Conv2D(F3, (1, 1), strides = (s,s), name = conv_name_base + '1', kernel_initializer = tf.keras.initializers.GlorotUniform(seed=0))(X_shortcut)
         X_shortcut = BatchNormalization(axis = 3, name = bn_name_base + '1')(X_shortcut)
 
         # Final step: Add shortcut value to main path, and pass it through a RELU activation (≈2 lines)
@@ -129,7 +128,7 @@ class ResnetModel:
         X = ZeroPadding2D((3, 3))(X_input)
 
         # Stage 1
-        X = Conv2D(64, (7, 7), strides = (2, 2), name = 'conv1', kernel_initializer = tf_v1.initializers.glorot_uniform(seed=0))(X)
+        X = Conv2D(64, (7, 7), strides = (2, 2), name = 'conv1', kernel_initializer = tf.keras.initializers.GlorotUniform(seed=0))(X)
         X = BatchNormalization(axis = 3, name = 'bn_conv1')(X)
         X = Activation('relu')(X)
         X = MaxPooling2D((3, 3), strides=(2, 2))(X)
@@ -163,7 +162,7 @@ class ResnetModel:
 
         # output layer
         X = Flatten()(X)
-        X = Dense(classes, activation='softmax', name='fc' + str(classes), kernel_initializer = tf_v1.initializers.glorot_uniform(seed=0))(X)
+        X = Dense(classes, activation='softmax', name='fc' + str(classes), kernel_initializer = tf.keras.initializers.GlorotUniform(seed=0))(X)
 
         # Create model
         model = Model(inputs = X_input, outputs = X, name='ResNet50')
