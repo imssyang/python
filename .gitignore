@@ -1,5 +1,7 @@
 # Directory in archive file
 archive
+envs/*
+!envs/virtualenvwrapper.sh
 keras/*
 !keras/README.md
 pip/*
