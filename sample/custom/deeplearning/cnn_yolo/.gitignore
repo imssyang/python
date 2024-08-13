@@ -1,6 +1,6 @@
 datasets/*
-datasets/README.md
-datasets/VOC2007_classes.txt
+!datasets/README.md
+!datasets/VOC2007_classes.txt
 models/*
 !models/yolov2_608.cfg
 !models/yolov2_anchors.txt
