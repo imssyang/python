@@ -1,0 +1,2 @@
+tensorflow==2.13.1
+pydot==3.0.1

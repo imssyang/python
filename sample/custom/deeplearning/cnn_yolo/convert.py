@@ -5,28 +5,19 @@ Reads Darknet19 config and weights and creates Keras model with TF backend.
 Currently only supports layers in Darknet19 config.
 
 python convert.py cfg_path weights_path h5_path
-
-# 模型转换
-执行命令 python convert.py config_path weights_path output_path  
-例如：python convert.py model_data/yolov2.cfg model_data/yolov2.weights model_data/yolov2.h5  
-config_path：yolov2的配置文件路径  
-weights_path：yolov2的权重文件路径  
-output_path：输出keras的h5文件  
 """
-from dataclasses import dataclass, field
-from typing import Any
-from typing import List
-from typing import Dict, Union
-from configparser import ConfigParser
-from collections import defaultdict
 import io
 import os
 import numpy as np
 import tensorflow as tf
+from configparser import ConfigParser
+from collections import defaultdict
+from dataclasses import dataclass, field
+from typing import Dict
 from tensorflow.keras import backend as K
 from tensorflow.keras.layers import (
-    Conv2D, GlobalAveragePooling2D, Input, Lambda, MaxPooling2D, LeakyReLU,
-    concatenate, BatchNormalization,
+    Input, Conv2D, BatchNormalization, LeakyReLU, Lambda,
+    MaxPooling2D, GlobalAveragePooling2D, concatenate,
 )
 from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
@@ -138,7 +129,6 @@ class DarknetWeights:
     path: str
     file: io.FileIO = field(default=None)
     header: np.ndarray = field(default_factory=lambda: np.array([]))
-    #sections: Dict[str, Union[DarknetConv]] = field(default_factory=dict)
 
     def load_head(self):
         print(f'Loading darknet weights: {self.path}')
@@ -161,16 +151,15 @@ class DarknetWeights:
         assert path.endswith('.weights'), '{path} is not a .weights file'
 
 
-class YoloMode:
+class KerasModel:
 
-    def create(self):
+    def create(self, config_path, weights_path, output_path):
         print('Load pretrain YOLO network.')
-        config = DarknetConfig('models/yolov2.cfg').load()
-        weights = DarknetWeights('models/yolov2.weights').load_head()
-        output_path = os.path.expanduser('models/yolov2.h5')
+        config = DarknetConfig(config_path).load()
+        weights = DarknetWeights(weights_path).load_head()
+        output_path = os.path.expanduser(output_path)
         output_root = os.path.splitext(output_path)[0]
 
-        print('Creating Keras model.')
         net_0 = config.sections['net_0']
         image_height = int(net_0.height)
         image_width = int(net_0.width)
@@ -283,15 +272,13 @@ class YoloMode:
             else:
                 raise ValueError(f'Unsupported section header type: {secname}')
 
-        # Create and save model.
+        # Create and save keras model.
         model = Model(inputs=all_layers[0], outputs=all_layers[-1])
         model.save(output_path)
         print(model.summary())
         print(f'Saved Keras model to {output_path}')
         plot(model, to_file=f'{output_root}.png', show_shapes=True)
         print(f'Saved model plot to {output_root}.png')
-
-
 
     @staticmethod
     def space_to_depth_x2(x):
@@ -311,5 +298,9 @@ class YoloMode:
 
 
 if __name__ == '__main__':
-    YoloMode().create()
+    KerasModel(
+        config_path='models/yolov2.cfg',
+        weights_path='models/yolov2.weights',
+        output_path='models/yolov2.h5',
+    ).create()
 
