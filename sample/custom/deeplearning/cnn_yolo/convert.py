@@ -152,8 +152,7 @@ class DarknetWeights:
 
 
 class KerasModel:
-
-    def create(self, config_path, weights_path, output_path):
+    def __init__(self, config_path, weights_path, output_path):
         print('Load pretrain YOLO network.')
         config = DarknetConfig(config_path).load()
         weights = DarknetWeights(weights_path).load_head()
@@ -302,5 +301,5 @@ if __name__ == '__main__':
         config_path='models/yolov2.cfg',
         weights_path='models/yolov2.weights',
         output_path='models/yolov2.h5',
-    ).create()
+    )
 

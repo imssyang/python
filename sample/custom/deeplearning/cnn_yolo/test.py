@@ -86,6 +86,6 @@ if __name__ == "__main__":
         classes_path='datasets/VOC2007_classes.txt',
     )
     model.predict_image(
-        image_path="images/person.jpg",
-        output_path="images/person_out.jpg",
+        image_path="images/dog.jpg",
+        output_path="images/dog_out.jpg",
     )

@@ -90,7 +90,7 @@ class TrainModel:
         train_sequence = SequenceData(self.data.train_path, input_shape, batch_size, self.anchors, classes_num)
         val_sequence = SequenceData(self.data.val_path, input_shape, batch_size, self.anchors, classes_num)
 
-        epochs = 3 #100
+        epochs = 5 #100
         model.fit_generator(train_sequence,
                             steps_per_epoch=train_sequence.get_epochs(),
                             validation_data=val_sequence,
@@ -98,7 +98,7 @@ class TrainModel:
                             epochs=epochs,
                             workers=4,
                             callbacks=[checkpoint, early_stopping])
-        model.save_weights("model_data/yolov2_trained.h5")
+        model.save_weights("models/yolov2_trained.h5")
         print("over****************")
 
     def create_model(self, anchors, classes_num, load_pretrained=True, freeze_body=True):
