@@ -1,9 +1,9 @@
-from tensorflow.keras.utils import Sequence
-from tensorflow.keras import backend as K
 import math
+import os
 import cv2
 import numpy as np
-import os
+from tensorflow.keras import backend as K
+from tensorflow.keras.utils import Sequence
 
 
 class SequenceData(Sequence):

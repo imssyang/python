@@ -33,37 +33,41 @@ def DarknetConv2D_BN_Leaky(*args, **kwargs):
 class Darknet19:
     def __init__(self, inputs):
         """Generate Darknet-19 model for Imagenet classification."""
-        body = self.body_layers(inputs)
+        body = self.first18_layers(inputs)
         logits = DarknetConv2D(1000, (1, 1), activation='softmax')(body)
         self.model = Model(inputs, logits)
 
-    @property
-    def body_layers(self):
+    @classmethod
+    def first18_layers(cls):
         """Generate first 18 conv layers of Darknet-19."""
         return compose(
             DarknetConv2D_BN_Leaky(32, (3, 3)),
             MaxPooling2D(),
             DarknetConv2D_BN_Leaky(64, (3, 3)),
             MaxPooling2D(),
-            self._bottleneck_block(128, 64),
+            cls.bottleneck_block(128, 64),
             MaxPooling2D(),
-            self._bottleneck_block(256, 128),
+            cls.bottleneck_block(256, 128),
             MaxPooling2D(),
-            self._bottleneck_x2_block(512, 256),
+            cls.bottleneck_x2_block(512, 256),
             MaxPooling2D(),
-            self._bottleneck_x2_block(1024, 512),
+            cls.bottleneck_x2_block(1024, 512),
         )
 
-    def _bottleneck_block(self, outer_filters, bottleneck_filters):
+    @classmethod
+    def bottleneck_block(cls, outer_filters, bottleneck_filters):
         """Bottleneck block of 3x3, 1x1, 3x3 convolutions."""
         return compose(
             DarknetConv2D_BN_Leaky(outer_filters, (3, 3)),
             DarknetConv2D_BN_Leaky(bottleneck_filters, (1, 1)),
-            DarknetConv2D_BN_Leaky(outer_filters, (3, 3)))
+            DarknetConv2D_BN_Leaky(outer_filters, (3, 3)),
+        )
 
-    def _bottleneck_x2_block(self, outer_filters, bottleneck_filters):
+    @classmethod
+    def bottleneck_x2_block(cls, outer_filters, bottleneck_filters):
         """Bottleneck block of 3x3, 1x1, 3x3, 1x1, 3x3 convolutions."""
         return compose(
             bottleneck_block(outer_filters, bottleneck_filters),
             DarknetConv2D_BN_Leaky(bottleneck_filters, (1, 1)),
-            DarknetConv2D_BN_Leaky(outer_filters, (3, 3)))
+            DarknetConv2D_BN_Leaky(outer_filters, (3, 3)),
+        )

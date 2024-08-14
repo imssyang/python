@@ -7,10 +7,7 @@ from tensorflow.keras.models import load_model, Model
 from tensorflow.keras.callbacks import (
     TensorBoard, ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
 )
-from yad2k.models import YOLOv2, YOLOv2LossLayer
-from yad2k.models.keras_yolo import yolo_body, yolo_loss
-from yad2k.utils.yolo_loss import YoloLoss
-from yad2k.utils.data_sequence import SequenceData
+from yad2k.models import YOLOv2, YOLOv2LossLayer, YOLOv2Sequence
 
 
 # http://host.robots.ox.ac.uk/pascal/VOC/voc2007
@@ -88,8 +85,8 @@ class TrainModel:
 
         batch_size = 8 # Effect GPU memory
         input_shape = (416, 416) # Size of input image must be a multiple of 32
-        train_sequence = SequenceData(self.data.train_path, input_shape, batch_size, self.anchors, classes_num)
-        val_sequence = SequenceData(self.data.val_path, input_shape, batch_size, self.anchors, classes_num)
+        train_sequence = YOLOv2Sequence(self.data.train_path, input_shape, batch_size, self.anchors, classes_num)
+        val_sequence = YOLOv2Sequence(self.data.val_path, input_shape, batch_size, self.anchors, classes_num)
 
         epochs = 5 #100
         model.fit_generator(train_sequence,
@@ -112,7 +109,7 @@ class TrainModel:
         # Input layers, RGB image (416*416*3)
         image_input = Input(shape=(416, 416, 3))
         anchors_num = len(anchors)
-        yolo_model = yolo_body(image_input, anchors_num, classes_num)
+        yolo_model = YOLOv2.Model(image_input, anchors_num, classes_num)
         topless_yolo = Model(yolo_model.input, yolo_model.layers[-2].output)
 
         # 2. Load Weight
@@ -144,7 +141,7 @@ class TrainModel:
         # 目标在单元格中的anchor的编码位置和类别信息
         # 最后一个5表示（x, y, w, h, c）c表示类别索引范围是0--1，目标放到了对应的单元格中的anchor
         matching_boxes_input = Input(shape=(13, 13, 5, 5))
-        model_loss = YoloLoss(anchors, classes_num)(
+        model_loss = YOLOv2LossLayer(anchors, classes_num)(
             [model_body.output, boxes_input, detectors_mask_input, matching_boxes_input],
         )
 
