@@ -2,8 +2,10 @@ import os
 import numpy as np
 import xml.etree.ElementTree as ET
 import tensorflow as tf
+from datetime import datetime
 from tensorflow.keras.layers import Input, Conv2D, Lambda
 from tensorflow.keras.models import load_model, Model
+from tensorflow.keras.utils import plot_model as plot
 from tensorflow.keras.callbacks import (
     TensorBoard, ModelCheckpoint, ReduceLROnPlateau, EarlyStopping,
 )
@@ -51,31 +53,39 @@ class Voc2007Data:
 
 
 class TrainModel:
-    def __init__(self, anchors_path, output_path, checkpoint_dir, data: Voc2007Data):
+    def __init__(self, pretrained_path, anchors_path, output_path, checkpoint_dir, data: Voc2007Data):
         self.anchors = YOLOv2.load_anchors(anchors_path)
         self.classes = data.classes
         self.train_path = data.train_path
         self.val_path = data.val_path
-        self.train(output_path, checkpoint_dir)
+        self.train(pretrained_path, output_path, checkpoint_dir)
 
-    def train(self, output_path, checkpoint_dir):
+    def train(self, pretrained_path, output_path, checkpoint_dir):
         gpus = tf.config.experimental.list_physical_devices(device_type="GPU")
         for gpu in gpus:
             # Use gpu memory as many as possible
             tf.config.experimental.set_memory_growth(gpu, True)
 
         classes_num = len(self.classes)
-        model_body, model = self.create_model(self.anchors, classes_num)
+        is_checkpoint = 'checkpoint' in pretrained_path
+        model_body, model = self.create_model(self.anchors, classes_num, None if is_checkpoint else pretrained_path)
         model.compile(optimizer='adam', loss={
             'yolo_loss': lambda y_true, y_pred: y_pred
         })  # This is a hack to use the custom loss function in the last layer.
         model.summary()
+        output_root = os.path.splitext(output_path)[0]
+        plot(model, to_file=f'{output_root}.png', show_shapes=True)
+        print(f'Saved model plot to {output_root}.png')
 
-        if not os.path.exists(checkpoint_dir):
-            os.makedirs(checkpoint_dir, exist_ok=True)
+        if is_checkpoint:
+            print(f'Load checkpoint weight: {pretrained_path}')
+            model.load_weights(pretrained_path)
+
+        now_time = datetime.now().strftime("%y%m%d%H%M%S")
+        checkpoint_dir = os.path.join(checkpoint_dir, now_time)
         logging = TensorBoard(log_dir=checkpoint_dir)
-        checkpoint_path = os.path.join(checkpoint_dir, 'ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5')
-        checkpoint = ModelCheckpoint(checkpoint_path, monitor='val_loss', save_weights_only=True, save_best_only=True, period=3)
+        checkpoint_path = os.path.join(checkpoint_dir, 'yolov2-ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5')
+        checkpoint = ModelCheckpoint(checkpoint_path, monitor='val_loss', save_weights_only=True, save_best_only=True, save_freq='epoch')
         reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, verbose=1)
         early_stopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=1)
 
@@ -85,17 +95,18 @@ class TrainModel:
         val_sequence = YOLOv2Sequence(self.val_path, input_shape, batch_size, self.anchors, classes_num)
 
         epochs = 5 #100
-        model.fit_generator(train_sequence,
-                            steps_per_epoch=train_sequence.get_epochs(),
-                            validation_data=val_sequence,
-                            validation_steps=val_sequence.get_epochs(),
-                            epochs=epochs,
-                            workers=4,
-                            callbacks=[checkpoint, early_stopping])
+        model.fit(
+            train_sequence,
+            steps_per_epoch=train_sequence.get_epochs(),
+            validation_data=val_sequence,
+            validation_steps=val_sequence.get_epochs(),
+            epochs=epochs,
+            workers=4,
+            callbacks=[checkpoint, early_stopping])
         model.save_weights(output_path)
         print("Done")
 
-    def create_model(self, anchors, classes_num, load_pretrained=True, freeze_body=True):
+    def create_model(self, anchors, classes_num, pretrained_path, freeze_body=True):
         """
         Create yolov2 model
         model_body: YOLOv2 with new output layer
@@ -109,15 +120,14 @@ class TrainModel:
         topless_yolo = Model(yolo_model.input, yolo_model.layers[-2].output)
 
         # 2. Load Weight
-        if load_pretrained:
-            topless_yolo_path = os.path.join('models', 'yolov2_topless.h5')
-            if not os.path.exists(topless_yolo_path):
-                print("CREATING TOPLESS WEIGHTS FILE")
-                yolo_path = os.path.join('models', 'yolov2.h5')
-                model_body = load_model(yolo_path)
-                model_body = Model(model_body.inputs, model_body.layers[-2].output)
-                model_body.save_weights(topless_yolo_path)
-            topless_yolo.load_weights(topless_yolo_path)
+        if pretrained_path:
+            print(f"Create and load topless weight from: {pretrained_path}")
+            pretrained_base, pretrained_ext = os.path.splitext(pretrained_path)
+            topless_path = f'{pretrained_base}_topless{pretrained_ext}'
+            model_body = load_model(pretrained_path)
+            model_body = Model(model_body.inputs, model_body.layers[-2].output)
+            model_body.save_weights(topless_path)
+            topless_yolo.load_weights(topless_path)
 
         # 3. Freeze yolo body，only train last layer
         if freeze_body:
@@ -145,10 +155,12 @@ class TrainModel:
 
 
 if __name__ == "__main__":
+    #pretrained_path = 'models/yolov2.h5'
+    pretrained_path = 'models/checkpoint/yolov2-ep003-loss51.287-val_loss52.414.h5'
     data = Voc2007Data(classes_path="datasets/VOC2007_classes.txt")
     TrainModel(
-        anchors_path="models/yolov2_anchors.txt",
+        pretrained_path=pretrained_path,
+        anchors_path='models/yolov2_anchors.txt',
         output_path='models/yolov2_trained.h5',
-        checkpoint_dir="models/checkpoint",
+        checkpoint_dir='models/checkpoint',
         data=data)
-
