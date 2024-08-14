@@ -192,17 +192,17 @@ class YOLOv2:
 
 
 class YOLOv2LossLayer(Layer):
-    def __init__(self, anchors, num_classes, **kwargs):
+    def __init__(self, anchors, classes_num, **kwargs):
         super().__init__(**kwargs)
         self.anchors = anchors
-        self.num_classes = num_classes
+        self.classes_num = classes_num
         self._name = "yolo_loss"
 
     def compute_output_shape(self, input_shape):
         return (input_shape[0],)
 
     def call(self, inputs, **kwargs):
-        loss = self.loss_fn(inputs, self.anchors, self.num_classes)
+        loss = self.loss_fn(inputs, self.anchors, self.classes_num)
         self.add_loss(loss, inputs=True)
         self.add_metric(loss, aggregation="mean", name="yolo_loss")
         return loss
@@ -212,7 +212,7 @@ class YOLOv2LossLayer(Layer):
 
     def loss_fn(self, args,
                 anchors,
-                num_classes,
+                classes_num,
                 rescore_confidence=False,
                 print_loss=False):
         """YOLO localization loss function.
@@ -230,7 +230,7 @@ class YOLOv2LossLayer(Layer):
             Already adjusted for conv height and width.
         anchors : tensor
             Anchor boxes for model.
-        num_classes : int
+        classes_num : int
             Number of object classes.
         rescore_confidence : bool, default=False
             If true then set confidence target to IOU of best predicted box with
@@ -243,21 +243,21 @@ class YOLOv2LossLayer(Layer):
             mean localization loss across minibatch
         """
         (yolo_output, true_boxes, detectors_mask, matching_true_boxes) = args
-        num_anchors = len(anchors)
+        anchors_num = len(anchors)
         object_scale = 5
         no_object_scale = 1
         class_scale = 1
         coordinates_scale = 1
         pred_xy, pred_wh, pred_confidence, pred_class_prob = YOLOv2.feat_to_boxes(
-            yolo_output, anchors, num_classes)
+            yolo_output, anchors, classes_num)
 
         # Unadjusted box predictions for loss.
         # TODO: Remove extra computation shared with yolo_head.
         # ?*13*13*125
         yolo_output_shape = K.shape(yolo_output)
         feats = K.reshape(yolo_output, [
-            -1, yolo_output_shape[1], yolo_output_shape[2], num_anchors,
-            num_classes + 5
+            -1, yolo_output_shape[1], yolo_output_shape[2], anchors_num,
+            classes_num + 5
         ])
         # ?*13*13*5*4
         pred_boxes = K.concatenate(
@@ -267,7 +267,7 @@ class YOLOv2LossLayer(Layer):
         # IOUs may be off due to different aspect ratio.
 
         # Expand pred x,y,w,h to allow comparison with ground truth.
-        # batch, conv_height, conv_width, num_anchors, num_true_boxes, box_params
+        # batch, conv_height, conv_width, anchors_num, num_true_boxes, box_params
         pred_xy = K.expand_dims(pred_xy, 4)  # ？*13*13*5*1*2
         pred_wh = K.expand_dims(pred_wh, 4)
 
@@ -277,7 +277,7 @@ class YOLOv2LossLayer(Layer):
 
         true_boxes_shape = K.shape(true_boxes)
 
-        # batch, conv_height, conv_width, num_anchors, num_true_boxes, box_params
+        # batch, conv_height, conv_width, anchors_num, num_true_boxes, box_params
         # ？*1*1*1*20*5
         true_boxes = K.reshape(true_boxes, [
             true_boxes_shape[0], 1, 1, 1, true_boxes_shape[1], true_boxes_shape[2]
@@ -339,7 +339,7 @@ class YOLOv2LossLayer(Layer):
         # ？*13*13*5*1
         matching_classes = K.cast(matching_true_boxes[..., 4], 'int32')
         # ？*13*13*5*20
-        matching_classes = K.one_hot(matching_classes, num_classes)
+        matching_classes = K.one_hot(matching_classes, classes_num)
         # ？*13*13*5*20
         classification_loss = (class_scale * detectors_mask *
                             K.square(matching_classes - pred_class_prob))
@@ -367,7 +367,7 @@ class YOLOv2LossLayer(Layer):
 
 class YOLOv2Sequence(Sequence):
 
-    def __init__(self, path, input_shape, batch_size, anchors, num_classes, max_boxes=20, shuffle=True):
+    def __init__(self, path, input_shape, batch_size, anchors, classes_num, max_boxes=20, shuffle=True):
         """
         初始化数据发生器
         :param path: 数据路径
@@ -385,8 +385,8 @@ class YOLOv2Sequence(Sequence):
         self.indexes = np.arange(len(self.datasets))
         self.anchors = anchors
         self.shuffle = shuffle
-        self.num_anchors = len(self.anchors)
-        self.num_classes = num_classes
+        self.anchors_num = len(self.anchors)
+        self.classes_num = classes_num
         self.max_boxes = max_boxes
 
     def __len__(self):
@@ -430,7 +430,7 @@ class YOLOv2Sequence(Sequence):
         Returns
         -------
         detectors_mask : array
-            0/1 mask for detectors in [conv_height, conv_width, num_anchors, 1]
+            0/1 mask for detectors in [conv_height, conv_width, anchors_num, 1]
             that should be compared with a matching ground truth box.
         matching_true_boxes: array
             Same shape as detectors_mask with the corresponding ground truth box
@@ -443,14 +443,14 @@ class YOLOv2Sequence(Sequence):
             of the original image dimensions.
         :return:
         detectors_mask : array
-            0/1 mask for detectors in [conv_height, conv_width, num_anchors, 1]
+            0/1 mask for detectors in [conv_height, conv_width, anchors_num, 1]
             that should be compared with a matching ground truth box.
         matching_true_boxes: array
             Same shape as detectors_mask with the corresponding ground truth box
             adjusted for comparison with predicted parameters at training time.
         """
         height, width = self.input_shape
-        num_anchors = len(self.anchors)
+        anchors_num = len(self.anchors)
         # Downsampling factor of 5x 2-stride max_pools == 32.
         # TODO: Remove hardcoding of downscaling calculations.
         assert height % 32 == 0, 'Image sizes in YOLO_v2 must be multiples of 32.'
@@ -459,9 +459,9 @@ class YOLOv2Sequence(Sequence):
         conv_width = width // 32
         num_box_params = boxes.shape[1]
         detectors_mask = np.zeros(
-            (conv_height, conv_width, num_anchors, 1), dtype=np.float32)
+            (conv_height, conv_width, anchors_num, 1), dtype=np.float32)
         matching_true_boxes = np.zeros(
-            (conv_height, conv_width, num_anchors, num_box_params),
+            (conv_height, conv_width, anchors_num, num_box_params),
             dtype=np.float32)
 
         for box in boxes:

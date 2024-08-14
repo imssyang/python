@@ -1,7 +1,7 @@
 datasets/*
 !datasets/README.md
 !datasets/VOC2007_classes.txt
-logs/*
+images/**/out/
 models/*
 !models/yolov2_608.cfg
 !models/yolov2_anchors.txt

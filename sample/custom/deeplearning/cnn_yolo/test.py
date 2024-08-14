@@ -10,11 +10,18 @@ from yad2k.models import YOLOv2
 
 class TestModel:
     def __init__(self, model_path, anchors_path, classes_path):
-        self.anchors = self.get_anchors(anchors_path)
-        self.classes = self.get_classes(classes_path)
+        self.anchors = YOLOv2.load_anchors(anchors_path)
+        self.classes = YOLOv2.load_classes(classes_path)
         self.model = self.load_model(model_path, self.anchors, len(self.classes))
 
-    def predict_image(self, image_path, output_path):
+    def predict_image(self, image_path, output_path=None):
+        if not output_path:
+            image_dir, image_name = os.path.split(image_path)
+            output_dir = os.path.join(image_dir, 'out')
+            if not os.path.exists(output_dir):
+                os.mkdir(output_dir)
+            output_path = os.path.join(output_dir, image_name)
+
         image = cv2.imread(image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         image = cv2.resize(image, (416, 416))
@@ -54,38 +61,16 @@ class TestModel:
         # model.summary()
         return model
 
-    @staticmethod
-    def get_classes(classes_path):
-        """
-        loads the classes
-        :param classes_path: classes file path
-        :return: list classes name
-        """
-        with open(classes_path) as f:
-            class_names = f.readlines()
-        class_names = [c.strip() for c in class_names]
-        return class_names
-
-    @staticmethod
-    def get_anchors(anchors_path):
-        """
-        loads the anchors from a file
-        :param anchors_path: anchors file path
-        :return: array anchors shape:(5, 2)
-        """
-        with open(anchors_path) as f:
-            anchors = f.readline()
-        anchors = [float(x) for x in anchors.split(',')]
-        return np.array(anchors).reshape(-1, 2)
-
 
 if __name__ == "__main__":
     model = TestModel(
-        model_path='models/yolov2_trained2.h5',
+        model_path='models/yolov2_trained.h5',
         anchors_path='models/yolov2_anchors.txt',
         classes_path='datasets/VOC2007_classes.txt',
     )
-    model.predict_image(
-        image_path="images/dog.jpg",
-        output_path="images/dog_out.jpg",
-    )
+    for root, dirs, files in os.walk('images'):
+        for file in files:
+            image_path = os.path.join(root, file)
+            model.predict_image(
+                image_path=image_path,
+            )

@@ -13,7 +13,7 @@ from yad2k.models import YOLOv2, YOLOv2LossLayer, YOLOv2Sequence
 # http://host.robots.ox.ac.uk/pascal/VOC/voc2007
 class Voc2007Data:
     def __init__(self, classes_path):
-        self.classes = self._load_classes(classes_path)
+        self.classes = YOLOv2.load_classes(classes_path)
         for dataset in ['train', 'trainval', 'val', 'test']:
             data_path = f'datasets/VOC2007_{dataset}.txt'
             with open(data_path, 'w') as f:
@@ -49,46 +49,42 @@ class Voc2007Data:
                 classes_id = self.classes.index(name)
                 dataset_file.write(f' {bndbox_info},{classes_id}')
 
-    def _load_classes(self, path):
-        """loads the classes"""
-        with open(path) as f:
-            class_names = f.readlines()
-        class_names = [c.strip() for c in class_names]
-        return class_names
-
 
 class TrainModel:
-    def __init__(self, anchors_path, data: Voc2007Data):
-        self.anchors = self._load_anchors(anchors_path)
-        self.data = data
-        self.train()
+    def __init__(self, anchors_path, output_path, checkpoint_dir, data: Voc2007Data):
+        self.anchors = YOLOv2.load_anchors(anchors_path)
+        self.classes = data.classes
+        self.train_path = data.train_path
+        self.val_path = data.val_path
+        self.train(output_path, checkpoint_dir)
 
-    def train(self):
+    def train(self, output_path, checkpoint_dir):
         gpus = tf.config.experimental.list_physical_devices(device_type="GPU")
         for gpu in gpus:
             # Use gpu memory as many as possible
             tf.config.experimental.set_memory_growth(gpu, True)
 
-        classes_num = len(self.data.classes)
+        classes_num = len(self.classes)
         model_body, model = self.create_model(self.anchors, classes_num)
         model.compile(optimizer='adam', loss={
             'yolo_loss': lambda y_true, y_pred: y_pred
         })  # This is a hack to use the custom loss function in the last layer.
         model.summary()
 
-        log_dir = 'logs/000/'
-        logging = TensorBoard(log_dir=log_dir)
-        checkpoint = ModelCheckpoint(log_dir + 'ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
-                                    monitor='val_loss', save_weights_only=True, save_best_only=True, period=3)
+        if not os.path.exists(checkpoint_dir):
+            os.makedirs(checkpoint_dir, exist_ok=True)
+        logging = TensorBoard(log_dir=checkpoint_dir)
+        checkpoint_path = os.path.join(checkpoint_dir, 'ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5')
+        checkpoint = ModelCheckpoint(checkpoint_path, monitor='val_loss', save_weights_only=True, save_best_only=True, period=3)
         reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, verbose=1)
         early_stopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=1)
 
         batch_size = 8 # Effect GPU memory
         input_shape = (416, 416) # Size of input image must be a multiple of 32
-        train_sequence = YOLOv2Sequence(self.data.train_path, input_shape, batch_size, self.anchors, classes_num)
-        val_sequence = YOLOv2Sequence(self.data.val_path, input_shape, batch_size, self.anchors, classes_num)
+        train_sequence = YOLOv2Sequence(self.train_path, input_shape, batch_size, self.anchors, classes_num)
+        val_sequence = YOLOv2Sequence(self.val_path, input_shape, batch_size, self.anchors, classes_num)
 
-        epochs = 1 #100
+        epochs = 5 #100
         model.fit_generator(train_sequence,
                             steps_per_epoch=train_sequence.get_epochs(),
                             validation_data=val_sequence,
@@ -96,8 +92,8 @@ class TrainModel:
                             epochs=epochs,
                             workers=4,
                             callbacks=[checkpoint, early_stopping])
-        model.save_weights("models/yolov2_trained2.h5")
-        print("over****************")
+        model.save_weights(output_path)
+        print("Done")
 
     def create_model(self, anchors, classes_num, load_pretrained=True, freeze_body=True):
         """
@@ -144,30 +140,15 @@ class TrainModel:
         model_loss = YOLOv2LossLayer(anchors, classes_num)(
             [model_body.output, boxes_input, detectors_mask_input, matching_boxes_input],
         )
-
-        """
-        model_loss = Lambda(
-            yolo_loss,
-            output_shape=(1,),
-            name='yolo_loss',
-            arguments={'anchors': anchors,
-                    'num_classes': classes_num})([
-            model_body.output, boxes_input,
-            detectors_mask_input, matching_boxes_input
-        ])
-        """
         model = Model([image_input, boxes_input, detectors_mask_input, matching_boxes_input], model_loss)
         return model_body, model
-
-    def _load_anchors(self, path):
-        """loads the anchors from a file"""
-        with open(path) as f:
-            anchors = f.readline()
-        anchors = [float(x) for x in anchors.split(',')]
-        return np.array(anchors).reshape(-1, 2) # shape:(5, 2)
 
 
 if __name__ == "__main__":
     data = Voc2007Data(classes_path="datasets/VOC2007_classes.txt")
-    TrainModel(anchors_path="models/yolov2_anchors.txt", data=data)
+    TrainModel(
+        anchors_path="models/yolov2_anchors.txt",
+        output_path='models/yolov2_trained.h5',
+        checkpoint_dir="models/checkpoint",
+        data=data)
 
