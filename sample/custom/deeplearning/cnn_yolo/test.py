@@ -5,7 +5,7 @@ import numpy as np
 import cv2
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Conv2D
-from yad2k.models.keras_yolo import yolo_eval, yolo_head, yolo_body
+from yad2k.models import YOLOv2
 
 
 class TestModel:
@@ -22,8 +22,8 @@ class TestModel:
         image = np.expand_dims(image, 0)  # Add batch dimension.
         y = self.model.predict(image, batch_size=1)
         classes_num = len(self.classes)
-        yolo_outputs = yolo_head(y, self.anchors, classes_num)
-        boxes, scores, classes = yolo_eval(yolo_outputs, (416, 416), score_threshold=0.6, iou_threshold=0.5)
+        yolo_outputs = YOLOv2.feat_to_boxes(y, self.anchors, classes_num)
+        boxes, scores, classes = YOLOv2.filter_boxes(yolo_outputs, (416, 416), score_threshold=0.6, iou_threshold=0.5)
         print(f'Found {len(boxes)} boxes for {image_path}')
 
         image = cv2.imread(image_path)
@@ -46,7 +46,7 @@ class TestModel:
 
     def load_model(self, model_path, anchors, classes_num):
         image_input = Input(shape=(416, 416, 3))
-        yolo_model = yolo_body(image_input, len(anchors), classes_num)
+        yolo_model = YOLOv2.Model(image_input, len(anchors), classes_num)
         topless_yolo = Model(yolo_model.input, yolo_model.layers[-2].output)
         final_layer = Conv2D(len(anchors) * (5 + classes_num), (1, 1), activation='linear')(topless_yolo.output)
         model = Model(image_input, final_layer)
@@ -81,7 +81,7 @@ class TestModel:
 
 if __name__ == "__main__":
     model = TestModel(
-        model_path='models/yolov2_trained.h5',
+        model_path='models/yolov2_trained2.h5',
         anchors_path='models/yolov2_anchors.txt',
         classes_path='datasets/VOC2007_classes.txt',
     )

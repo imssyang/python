@@ -42,7 +42,7 @@ class YOLOv2:
     @classmethod
     def Model(cls, inputs, anchors_num, classes_num):
         """Create YOLO_V2 model CNN body in Keras."""
-        darknet18 = Model(inputs, Darknet19.first18_layers(inputs))
+        darknet18 = Model(inputs, Darknet19.first18_layers()(inputs))
         conv13 = darknet18.layers[43]
         conv20 = compose(
             DarknetConv2D_BN_Leaky(1024, (3, 3)),
@@ -193,7 +193,7 @@ class YOLOv2:
 
 class YOLOv2LossLayer(Layer):
     def __init__(self, anchors, num_classes, **kwargs):
-        super(YoloLoss, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.anchors = anchors
         self.num_classes = num_classes
         self._name = "yolo_loss"
@@ -248,7 +248,7 @@ class YOLOv2LossLayer(Layer):
         no_object_scale = 1
         class_scale = 1
         coordinates_scale = 1
-        pred_xy, pred_wh, pred_confidence, pred_class_prob = yolo_head(
+        pred_xy, pred_wh, pred_confidence, pred_class_prob = YOLOv2.feat_to_boxes(
             yolo_output, anchors, num_classes)
 
         # Unadjusted box predictions for loss.
