@@ -70,6 +70,8 @@ if __name__ == "__main__":
     )
     for root, dirs, files in os.walk('images'):
         for file in files:
+            if 'out' in root:
+                continue
             image_path = os.path.join(root, file)
             model.predict_image(
                 image_path=image_path,
