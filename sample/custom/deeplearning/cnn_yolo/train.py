@@ -53,14 +53,14 @@ class Voc2007Data:
 
 
 class TrainModel:
-    def __init__(self, pretrained_path, anchors_path, output_path, checkpoint_dir, data: Voc2007Data):
+    def __init__(self, pretrained_path, anchors_path, output_path, checkpoint_dir, epochs, data: Voc2007Data):
         self.anchors = YOLOv2.load_anchors(anchors_path)
         self.classes = data.classes
         self.train_path = data.train_path
         self.val_path = data.val_path
-        self.train(pretrained_path, output_path, checkpoint_dir)
+        self.train(pretrained_path, output_path, checkpoint_dir, epochs)
 
-    def train(self, pretrained_path, output_path, checkpoint_dir):
+    def train(self, pretrained_path, output_path, checkpoint_dir, epochs):
         gpus = tf.config.experimental.list_physical_devices(device_type="GPU")
         for gpu in gpus:
             # Use gpu memory as many as possible
@@ -94,7 +94,6 @@ class TrainModel:
         train_sequence = YOLOv2Sequence(self.train_path, input_shape, batch_size, self.anchors, classes_num)
         val_sequence = YOLOv2Sequence(self.val_path, input_shape, batch_size, self.anchors, classes_num)
 
-        epochs = 5 #100
         model.fit(
             train_sequence,
             steps_per_epoch=train_sequence.get_epochs(),
@@ -155,12 +154,13 @@ class TrainModel:
 
 
 if __name__ == "__main__":
-    #pretrained_path = 'models/yolov2.h5'
-    pretrained_path = 'models/checkpoint/yolov2-ep003-loss51.287-val_loss52.414.h5'
     data = Voc2007Data(classes_path="datasets/VOC2007_classes.txt")
     TrainModel(
-        pretrained_path=pretrained_path,
+        pretrained_path='models/yolov2.h5',
+        #pretrained_path='models/checkpoint/yolov2-ep003-loss51.287-val_loss52.414.h5',
         anchors_path='models/yolov2_anchors.txt',
         output_path='models/yolov2_trained.h5',
         checkpoint_dir='models/checkpoint',
-        data=data)
+        epochs=1,
+        data=data,
+    )
