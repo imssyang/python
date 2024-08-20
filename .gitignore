@@ -10,6 +10,7 @@ sample/**/*.pid
 sample/**/*.jpg
 sample/ext/whisper/
 sample/custom/c2p/dlopen/pybind11/
+sample/custom/deeplearning/cnn_car/
 !sample/**/bin
 !sample/custom/deeplearning/**/*.jpg
 **/__pycache__
