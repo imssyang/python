@@ -1,0 +1,9 @@
+**/__pycache__
+**/*.egg-info
+**/*.pyc
+**/*.log
+datasets/*
+!datasets/__init__.py
+!datasets/lfw_subset/
+images/out/
+models/
