@@ -7,3 +7,4 @@ datasets/*
 !datasets/lfw_subset/
 images/out/
 models/
+facenet_bak/
