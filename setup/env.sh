@@ -33,7 +33,7 @@ fi
 #export VIRTUALENV_CONFIG_FILE=/opt/python3/conf/virtualenv.ini
 
 # pytest
-#export PYTEST_ADDOPTS="-vv --disable-pytest-warnings --durations=0 -s"
+export PYTEST_ADDOPTS="-vv --disable-pytest-warnings --durations=0 -s"
 
 # alias
 #alias uwsgitop="uwsgitop localhost:2031"
