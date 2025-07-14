@@ -1,0 +1,2 @@
+openai==1.95.1
+openai-agents==0.1.0

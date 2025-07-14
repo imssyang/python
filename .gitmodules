@@ -2,3 +2,6 @@
 	path = pyenv
 	url = https://github.com/pyenv/pyenv.git
 	ignore = untracked
+[submodule "sample/ext/openai/openai-python"]
+	path = sample/ext/openai/openai-python
+	url = https://github.com/openai/openai-python.git
