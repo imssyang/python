@@ -9,6 +9,10 @@ pip/*
 sample/**/*.pid
 sample/**/*.jpg
 sample/ext/whisper/
+sample/ext/openai/default_tts.ulaw
+sample/ext/openai/openai-python/
+sample/ext/openai/openai-agents-python/
+sample/ext/openai/openai-cookbook/
 sample/custom/c2p/dlopen/pybind11/
 sample/custom/deeplearning/cnn_car/
 !sample/**/bin
@@ -17,3 +21,4 @@ sample/custom/deeplearning/cnn_car/
 **/*.egg-info
 **/*.pyc
 **/*.log
+

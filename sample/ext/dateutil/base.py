@@ -27,3 +27,9 @@ for item in list(rrulestr(
     print(item)
 
 
+print("FREQ=DAILY;UNTIL=20250930T235959Z")
+for item in list(rrulestr(
+    "FREQ=DAILY;UNTIL=20250930T235959Z",
+    dtstart=parse("20250924T100000Z"),
+)):
+    print(item)
